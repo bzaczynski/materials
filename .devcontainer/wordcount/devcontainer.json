@@ -2,7 +2,7 @@
   "name": "realpython/wordcount",
   "workspaceFolder": "materials/wordcount",
   "image": "mcr.microsoft.com/devcontainers/python:3.12-bookworm",
-  "postCreateCommand": "echo 'Hello World!'",
+  "postCreateCommand": "echo 'Hello World!' > hello.txt",
   "customizations": {
     "codespaces": {
       "openFiles": [
