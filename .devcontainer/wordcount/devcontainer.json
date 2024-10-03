@@ -4,6 +4,7 @@
   "workspaceFolder": "/workspaces/wordcount",
   "workspaceMount": "source=${localWorkspaceFolder}/wordcount,target=/workspaces/wordcount,type=bind",
   "postCreateCommand": "python -m pip install -r requirements.txt -e . && rm -rf src/*.egg-info/",
+  "postAttachCommand": "echo '💡 To evaluate your solution, run the pytest command.'",
   "customizations": {
     "codespaces": {
       "openFiles": [
