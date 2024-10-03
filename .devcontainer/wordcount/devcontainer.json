@@ -1,8 +1,8 @@
 {
   "name": "wordcount",
   "image": "mcr.microsoft.com/devcontainers/python:3.12-bookworm",
-  "workspaceFolder": "/workspace/wordcount",
-  "workspaceMount": "source=${localWorkspaceFolder}/wordcount,target=/workspace/wordcount,type=bind",
+  "workspaceFolder": "/workspaces/wordcount",
+  "workspaceMount": "source=${localWorkspaceFolder}/wordcount,target=/workspaces/wordcount,type=bind",
   "postCreateCommand": "echo 'Hello World!' > hello.txt",
   "customizations": {
     "codespaces": {
