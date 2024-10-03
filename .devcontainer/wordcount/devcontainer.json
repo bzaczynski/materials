@@ -1,6 +1,6 @@
 {
   "name": "realpython/wordcount",
-  "workspaceFolder": "wordcount/",
+  "workspaceFolder": "materials/wordcount",
   "image": "mcr.microsoft.com/devcontainers/python:3.12-bookworm",
   "postCreateCommand": "echo 'Hello World!'",
   "customizations": {
