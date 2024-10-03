@@ -1,0 +1,14 @@
+{
+  "name": "wsgi",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12-bookworm",
+  "workspaceFolder": "/workspace/zen-of-python",
+  "workspaceMount": "source=${localWorkspaceFolder}/zen-of-python,target=/workspace/zen-of-python,type=bind",
+  "postCreateCommand": "echo 'WSGI!' > wsgi.txt",
+  "customizations": {
+    "codespaces": {
+      "openFiles": [
+        "README.md"
+      ]
+    }
+  }
+}
