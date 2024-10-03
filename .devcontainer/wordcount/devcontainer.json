@@ -16,5 +16,10 @@
         "ms-python.python"
       ]
     }
+  },
+  "settings": {
+    "codespaces.trustedDomains": [
+       "https://realpython.com"
+    ]
   }
 }
