@@ -1,3 +1,4 @@
+import re
 import webbrowser
 from operator import attrgetter
 from unittest.mock import Mock
@@ -10,6 +11,11 @@ from .constants import (COMMAND_TASK, MIN_FAILURES_BEFORE_HINT,
 from .models import ExerciseProgress, TestRun, TestStatus
 from .resources import Resource
 from .view import Display
+
+
+def pytest_collect_file(parent, file_path):
+    if re.fullmatch(r"task\d+.py", file_path.name):
+        return pytest.Module.from_parent(parent, path=file_path)
 
 
 def pytest_addoption(parser: Parser) -> None:
@@ -25,12 +31,12 @@ def pytest_configure(config: Config) -> None:
     # Suppress pytest's default output unless in help mode:
     if not config.getoption("--help"):
         _disable_plugin(config, "terminalreporter")
-        # Other plugins are tightly coupled to the terminal reporter:
-        config.pluginmanager.register(Mock(), "terminalreporter")
+    # Other plugins are tightly coupled to the terminal reporter:
+    config.pluginmanager.register(Mock(), "terminalreporter")
 
     # Disable stdout/stderr capturing unless explicitly enabled:
     if not any(
-        x.startswith("--capture") for x in config.invocation_params.args
+            x.startswith("--capture") for x in config.invocation_params.args
     ):
         _disable_plugin(config, "capturemanager")
 
@@ -132,7 +138,7 @@ def _new_task_unlocked(progress: ExerciseProgress, test_run: TestRun) -> bool:
 
 
 def _get_resources(
-    progress: ExerciseProgress, test_run: TestRun
+        progress: ExerciseProgress, test_run: TestRun
 ) -> list[Resource]:
     return sorted(
         set(

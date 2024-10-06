@@ -14,3 +14,14 @@ class Test:
     def test_command_returns_successfully(self):
         process = run(["wordcount", "/dev/null"], capture_output=True)
         assert process.returncode == 0
+
+
+@task(
+    number=2,
+    name="Run the wordcount Command",
+    url="https://realpython.com/lessons/run-the-wordcount-command-task/",
+)
+class Test2:
+    def test_command_returns_successfully(self):
+        process = run(["wordcount", "/dev/null"], capture_output=True)
+        assert process.returncode == 0
