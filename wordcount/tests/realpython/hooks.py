@@ -1,3 +1,4 @@
+import os
 import re
 import webbrowser
 from operator import attrgetter
@@ -29,10 +30,10 @@ def pytest_addoption(parser: Parser) -> None:
 @pytest.hookimpl(trylast=True)
 def pytest_configure(config: Config) -> None:
     # Suppress pytest's default output unless in help mode:
-    if not config.getoption("--help"):
+    if not config.getoption("--help") and not os.getenv("DEBUG"):
         _disable_plugin(config, "terminalreporter")
-    # Other plugins are tightly coupled to the terminal reporter:
-    config.pluginmanager.register(Mock(), "terminalreporter")
+        # Other plugins are tightly coupled to the terminal reporter:
+        config.pluginmanager.register(Mock(), "terminalreporter")
 
     # Disable stdout/stderr capturing unless explicitly enabled:
     if not any(

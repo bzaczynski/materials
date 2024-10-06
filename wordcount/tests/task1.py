@@ -1,3 +1,4 @@
+import os
 from subprocess import run
 
 from realpython import course, task, tutorial
@@ -12,5 +13,5 @@ from realpython import course, task, tutorial
 @course("writing-comments-python", "Writing Comments in Python")
 class Test:
     def test_command_returns_successfully(self):
-        process = run(["wordcount", "/dev/null"], capture_output=True)
+        process = run(["wordcount", os.devnull], capture_output=True)
         assert process.returncode == 0
