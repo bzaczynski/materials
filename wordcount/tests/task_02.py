@@ -21,6 +21,10 @@ class Test:
         process = run(["wordcount"], capture_output=True, input=b"caffe\n")
         assert process.stdout == b"1 1 6\n"
 
+    def test_delimits_words_on_whitespace(self):
+        process = run(["wordcount"], capture_output=True, input=b"back-end\n")
+        assert process.stdout == b"1 1 9\n"
+
     def test_handles_linux_newline(self):
         process = run(["wordcount"], capture_output=True, input=b"hot\ntea")
         assert process.stdout == b"1 2 7\n"

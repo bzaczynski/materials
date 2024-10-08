@@ -15,7 +15,7 @@ from .view import Display
 
 
 def pytest_collect_file(parent, file_path):
-    if re.fullmatch(r"task\d+.py", file_path.name):
+    if re.fullmatch(r"task_?\d+.py", file_path.name):
         return pytest.Module.from_parent(parent, path=file_path)
 
 
