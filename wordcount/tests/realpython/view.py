@@ -111,6 +111,7 @@ def _color(status: TestStatus) -> str:
         TestStatus.PASSED: "green",
         TestStatus.FAILED: "red",
         TestStatus.TIMED_OUT: "gold1",
+        TestStatus.SKIPPED: "grey37 strike",
     }.get(status, "#ffffff")
 
 
