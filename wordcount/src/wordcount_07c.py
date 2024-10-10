@@ -24,9 +24,15 @@ def main():
         if path.name == "-":
             print(to_string(*counts, max_digits))
         elif not path.exists():
-            print(f"{to_string(*counts, max_digits)} {path} (no such file or directory)")
+            print(
+                f"{to_string(*counts, max_digits)} "
+                f"{path} (no such file or directory)"
+            )
         elif path.is_dir():
-            print(f"{to_string(*counts, max_digits)} {path}/ (is a directory)")
+            print(
+                f"{to_string(*counts, max_digits)} "
+                f"{path}/ (is a directory)"
+            )
         else:
             print(to_string(*counts, max_digits), path)
     if len(paths) > 1:

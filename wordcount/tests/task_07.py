@@ -45,10 +45,6 @@ class Test:
             )
             assert process.stdout == expected.encode()
 
-    @pytest.mark.skip
-    def test_can_repeat_standard_input_multiple_times(self, make_file):
-        pass
-
     def test_can_mix_files_with_standard_input(self, make_file):
         with make_file(b"Lorem ipsum dolor sit amet\n") as path:
             command = ["wordcount", path, "-"]
@@ -83,6 +79,9 @@ class Test:
             process = run(command, capture_output=True, input=b"flat white")
             assert process.stdout == expected
 
+    # @pytest.mark.skip
+    # def test_can_repeat_standard_input_multiple_times(self, make_file):
+    #     pass
 
     #     with (
     #         make_file(b"Lorem ipsum dolor sit amet\n") as path1,
@@ -101,4 +100,3 @@ class Test:
 
     # TODO Next up: argparse
     # TODO Next up: counts selection
-    # TODO Next up: formatting advanced?
