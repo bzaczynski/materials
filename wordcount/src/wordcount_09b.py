@@ -1,5 +1,5 @@
 """
-Refactor, introduce a helper function.
+Add flags/options
 """
 
 import sys
@@ -85,7 +85,20 @@ def main():
         file_infos = [FileInfo.from_path(path) for path in args.paths]
     else:
         file_infos = [FileInfo.from_path(Path("-"))]
-    display(file_infos, args.selected_counts)
+    total_counts = sum((info.counts for info in file_infos), Counts())
+    max_digits = total_counts.max_digits(args.selected_counts)
+    for info in file_infos:
+        line = info.counts.as_string(max_digits, args.selected_counts)
+        if info.path == Path("-"):
+            print(line)
+        elif not info.path.exists():
+            print(line, info.path, "(no such file or directory)")
+        elif info.path.is_dir():
+            print(line, f"{info.path}/ (is a directory)")
+        else:
+            print(line, info.path)
+    if len(file_infos) > 1:
+        print(total_counts.as_string(max_digits, args.selected_counts), "total")
 
 
 def parse_args():
@@ -99,20 +112,3 @@ def parse_args():
             default=SelectedCounts.NONE,
         )
     return parser.parse_args(namespace=Arguments())
-
-
-def display(file_infos, selected_counts):
-    total_counts = sum((info.counts for info in file_infos), Counts())
-    max_digits = total_counts.max_digits(selected_counts)
-    for info in file_infos:
-        line = info.counts.as_string(max_digits, selected_counts)
-        if info.path == Path("-"):
-            print(line)
-        elif not info.path.exists():
-            print(line, info.path, "(no such file or directory)")
-        elif info.path.is_dir():
-            print(line, f"{info.path}/ (is a directory)")
-        else:
-            print(line, info.path)
-    if len(file_infos) > 1:
-        print(total_counts.as_string(max_digits, selected_counts), "total")

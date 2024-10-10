@@ -15,5 +15,6 @@ class Test:
             assert process.stdout == f" 1  2 12 {path}\n".encode()
 
     def test_treats_the_dash_character_as_standard_input(self):
+        """Treats the dash character (-) as standard input"""
         process = run(["wordcount", "-"], capture_output=True, input=b"latte\n")
         assert process.stdout == b"1 1 6\n"

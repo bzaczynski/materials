@@ -12,7 +12,7 @@ class Counts(NamedTuple):
     words: int = 0
     bytes: int = 0
 
-    @property
+    @property  # Can't use a cached property here because a NamedTuple doesn't support the `__set_name__()` method (?)
     def max_digits(self):
         return len(str(max(self)))  # Use max(self) thanks to NamedTuple
 

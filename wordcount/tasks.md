@@ -9,8 +9,11 @@
 - [x] Dealing with Unicode characters
 - [x] Formatting the numbers according to max digits
 - [ ] Selecting the counts
-    - [ ] Single options: `--lines`, `--words`, `--bytes`
-    - [ ] Order is always the same
-    - [ ] Formatting is still applied
-    - [ ] Can mix with files and stdin
-    - [ ] Add the extra `--chars` option
+    - [x] Single options: `--lines`, `--words`, `--bytes`
+    - [x] Formatting is still applied
+    - [x] Can mix with files and stdin
+- [ ] Add the extra `--chars` option
+- [ ] Order is always the same
+
+TODO: Make the tests run _much_ faster.
+TODO: Give some feedback, like why the assertion is failing (expected vs actual)
