@@ -7,6 +7,8 @@ from tempfile import TemporaryDirectory, gettempdir
 
 import pytest
 
+# TODO session-scoped fixtures with files that will be removed afterwards?
+
 
 @pytest.fixture
 def fake_dir():

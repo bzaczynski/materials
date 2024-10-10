@@ -16,43 +16,43 @@ class Test:
         process = run(command, capture_output=True, input=b"caffe\nlatte\nflat white\n")
         assert process.stdout == b" 3  4 23\n"
 
-    def test_counts_lines_words_bytes_in_stdin_explicitly(self, make_file, fake_dir, random_filename):
+    def test_counts_lines_words_bytes_in_stdin_explicitly(self):
         """Counts lines, words, and bytes in stdin explicitly"""
         command = ["wordcount", "--lines", "--words", "--bytes"]
         process = run(command, capture_output=True, input=b"caffe\nlatte\nflat white\n")
         assert process.stdout == b" 3  4 23\n"
 
-    def test_only_counts_lines_in_stdin(self, make_file, fake_dir, random_filename):
+    def test_only_counts_lines_in_stdin(self):
         command = ["wordcount", "--lines"]
         process = run(command, capture_output=True, input=b"caffe\nlatte\nflat white\n")
         assert process.stdout == b"3\n"
 
-    def test_only_counts_words_in_stdin(self, make_file, fake_dir, random_filename):
+    def test_only_counts_words_in_stdin(self):
         command = ["wordcount", "--words"]
         process = run(command, capture_output=True, input=b"caffe\nlatte\nflat white\n")
         assert process.stdout == b"4\n"
 
-    def test_only_counts_bytes_in_stdin(self, make_file, fake_dir, random_filename):
+    def test_only_counts_bytes_in_stdin(self):
         command = ["wordcount", "--bytes"]
         process = run(command, capture_output=True, input=b"caffe\nlatte\nflat white\n")
         assert process.stdout == b"23\n"
 
-    def test_counts_lines_and_words_in_stdin(self, make_file, fake_dir, random_filename):
+    def test_counts_lines_and_words_in_stdin(self):
         command = ["wordcount", "--lines", "--words"]
         process = run(command, capture_output=True, input=b"caffe\nlatte\nflat white\n")
         assert process.stdout == b"3 4\n"
 
-    def test_counts_lines_and_bytes_in_stdin(self, make_file, fake_dir, random_filename):
+    def test_counts_lines_and_bytes_in_stdin(self):
         command = ["wordcount", "--lines", "--bytes"]
         process = run(command, capture_output=True, input=b"caffe\nlatte\nflat white\n")
         assert process.stdout == b" 3 23\n"
 
-    def test_counts_words_and_bytes_in_stdin(self, make_file, fake_dir, random_filename):
+    def test_counts_words_and_bytes_in_stdin(self):
         command = ["wordcount", "--words", "--bytes"]
         process = run(command, capture_output=True, input=b"caffe\nlatte\nflat white\n")
         assert process.stdout == b" 4 23\n"
 
-    def test_always_displays_counts_of_stdin_in_the_same_order(self, make_file, fake_dir, random_filename):
+    def test_always_displays_counts_of_stdin_in_the_same_order(self):
         for flags in permutations(["--lines", "--words", "--bytes"]):
             command = ["wordcount", *flags]
             process = run(command, capture_output=True, input=b"caffe\nlatte\nflat white\n")
