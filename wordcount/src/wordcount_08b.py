@@ -44,7 +44,7 @@ class FileInfo:
         elif path.is_file():
             raw_text = path.read_bytes()
         else:
-            return cls(path, Counts(0, 0, 0))
+            return cls(path, Counts())
         text = raw_text.decode("utf-8")
         return cls(
             path,

@@ -15,6 +15,7 @@ class SelectedCounts(IntFlag):
     NONE = 0
     LINES = auto()
     WORDS = auto()
+    CHARS = auto()
     BYTES = auto()
     DEFAULT = LINES | WORDS | BYTES
 
@@ -22,13 +23,14 @@ class SelectedCounts(IntFlag):
 class Arguments(Namespace):
     @cached_property
     def selected_counts(self):
-        selected = self.lines | self.words | self.bytes
-        return selected or SelectedCounts.DEFAULT  # Short-circuit evaluation, "or"
+        selected = self.lines | self.words | self.chars | self.bytes
+        return selected or SelectedCounts.DEFAULT
 
 
 class Counts(NamedTuple):
     lines: int = 0
     words: int = 0
+    chars: int = 0
     bytes: int = 0
 
     def max_digits(self, selected_counts):
@@ -38,6 +40,7 @@ class Counts(NamedTuple):
         return Counts(
             lines=self.lines + other.lines,
             words=self.words + other.words,
+            chars=self.chars + other.chars,
             bytes=self.bytes + other.bytes,
         )
 
@@ -67,13 +70,14 @@ class FileInfo:
         elif path.is_file():
             raw_text = path.read_bytes()
         else:
-            return cls(path, Counts(0, 0, 0))
+            return cls(path, Counts())
         text = raw_text.decode("utf-8")
         return cls(
             path,
             Counts(
                 lines=text.count("\n"),
                 words=len(text.split()),
+                chars=len(text),
                 bytes=len(raw_text),
             )
         )
