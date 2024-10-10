@@ -51,10 +51,6 @@ class Counts:
 
     def max_digits(self, selected_counts: SelectedCounts) -> int:
         return len(str(max(self.numbers(selected_counts))))
-        # max_digits = len(str(max(num_lines, num_words, num_bytes)))
-        # return max(
-        #     len(str(number)) for number in self.numbers(selected_counts)
-        # )
 
     def to_string(
         self, selected_counts: SelectedCounts, max_digits: int

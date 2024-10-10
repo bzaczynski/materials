@@ -1,9 +1,15 @@
+"""
+Replace sys.argv[1:] with argparse
+"""
+
 import sys
+from argparse import ArgumentParser
 from pathlib import Path
 
 
 def main():
-    if sys.argv[1:]:
+    args = parse_args()
+    if len(args.paths) > 0:
         paths = [Path(arg) for arg in sys.argv[1:]]
     else:
         paths = [Path("-")]
@@ -37,6 +43,12 @@ def main():
             print(to_string(*counts, max_digits), path)
     if len(paths) > 1:
         print(to_string(*total_counts, max_digits), "total")
+
+
+def parse_args():
+    parser = ArgumentParser()
+    parser.add_argument("paths", nargs="*", type=Path)
+    return parser.parse_args()
 
 
 def get_counts(raw_text):

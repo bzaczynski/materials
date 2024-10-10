@@ -1,13 +1,18 @@
+"""
+Add the ability to read from a file using sys.argv[1].
+"""
+
 import sys
 from pathlib import Path
 
 
 def main():
-    path = Path(sys.argv[1] if len(sys.argv) > 1 else "-")
-    if path.name == "-":
-        raw_text = sys.stdin.buffer.read()
-    else:
+    if len(sys.argv) > 1:
+        path = Path(sys.argv[1])
         raw_text = path.read_bytes()
+    else:
+        path = None
+        raw_text = sys.stdin.buffer.read()
     text = raw_text.decode("utf-8")
     num_lines = text.count("\n")
     num_words = len(text.split())
@@ -18,7 +23,7 @@ def main():
         f"{num_words:>{max_digits}} "
         f"{num_bytes:>{max_digits}}"
     )
-    if path.name != "-":
+    if path:
         print(output, path)
     else:
         print(output)

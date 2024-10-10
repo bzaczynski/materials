@@ -27,7 +27,7 @@ def main():
             print(output, path)
         else:
             print(output)
-    except IsADirectoryError:
-        print(f"0 0 0 {path}/ (is a directory)")
     except FileNotFoundError:
         print(f"0 0 0 {path} (no such file or directory)")
+    except IsADirectoryError:
+        print(f"0 0 0 {path}/ (is a directory)")
