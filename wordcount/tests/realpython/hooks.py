@@ -29,7 +29,7 @@ def pytest_addoption(parser: Parser) -> None:
 
 @pytest.hookimpl(trylast=True)
 def pytest_configure(config: Config) -> None:
-    # Suppress pytest's default output unless in help mode:
+    # Suppress pytest's default output unless in help or debug mode:
     if not config.getoption("--help") and not os.getenv("DEBUG"):
         _disable_plugin(config, "terminalreporter")
         # Other plugins are tightly coupled to the terminal reporter:
