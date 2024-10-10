@@ -1,0 +1,2 @@
+class RealPythonException(Exception):
+    pass

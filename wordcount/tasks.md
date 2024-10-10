@@ -14,6 +14,7 @@
     - [x] Can mix with files and stdin
 - [ ] Add the extra `--chars` option
 - [ ] Order is always the same
+- [ ] Fix docstring of parametrized (!)
 
 TODO: Make the tests run _much_ faster.
 TODO: Give some feedback, like why the assertion is failing (expected vs actual)

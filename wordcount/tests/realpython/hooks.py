@@ -1,5 +1,7 @@
 import os
 import re
+import sys
+import traceback
 import webbrowser
 from operator import attrgetter
 from unittest.mock import Mock
@@ -7,11 +9,22 @@ from unittest.mock import Mock
 import pytest
 from pytest import Config, Item, Parser, Session, TestReport
 
+
 from .constants import (COMMAND_TASK, MIN_FAILURES_BEFORE_HINT,
                         STASH_REPORT_KEY, TEST_TIMEOUT_SECONDS)
+from .exceptions import RealPythonException
 from .models import ExerciseProgress, TestRun, TestStatus
 from .resources import Resource
 from .view import Display
+
+error = False
+
+
+def pytest_exception_interact(call):
+    global error
+    if call.excinfo.type is RealPythonException:
+        traceback.print_exception(call.excinfo.value, file=sys.stderr)
+        error = True
 
 
 def pytest_collect_file(parent, file_path):
@@ -84,10 +97,13 @@ def pytest_runtest_makereport(item: Item):
 
 
 def pytest_sessionfinish(session: Session):
+    if error:
+        return
+
     if not session.items:
         return
 
-    if session.config.option.cacheclear:
+    if session.config.option.cacheclear:  # pytest --cache-clear
         return
 
     progress = ExerciseProgress.from_cache(session.config.cache)
