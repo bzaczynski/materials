@@ -5,7 +5,7 @@ from realpython import task
 
 @task(
     number=3,
-    name="Handle non-ASCII Unicode Characters",
+    name="Handle Non-ASCII Unicode Characters",
     url="TODO",
 )
 class Test:

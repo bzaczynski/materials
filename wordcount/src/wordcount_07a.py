@@ -3,28 +3,21 @@ from pathlib import Path
 
 
 def main():
-    if paths := [Path(arg) for arg in sys.argv[1:]]:
-        for path in paths:
-            if path.name == "-":
-                read_stdin()
-            elif not path.exists():
-                print(f"0 0 0 {path} (no such file or directory)")
-            elif path.is_dir():
-                print(f"0 0 0 {path}/ (is a directory)")
-            else:
-                read_file(path)
+    if sys.argv[1:]:
+        paths = [Path(arg) for arg in sys.argv[1:]]
     else:
-        read_stdin()
-
-
-def read_stdin():
-    output = to_string(*get_counts(sys.stdin.buffer.read()))
-    print(output)
-
-
-def read_file(path):
-    output = to_string(*get_counts(path.read_bytes()))
-    print(output, path)
+        paths = [Path("-")]
+    for path in paths:
+        if path.name == "-":
+            counts = get_counts(sys.stdin.buffer.read())
+            print(to_string(*counts))
+        elif not path.exists():
+            print(f"0 0 0 {path} (no such file or directory)")
+        elif path.is_dir():
+            print(f"0 0 0 {path}/ (is a directory)")
+        else:
+            counts = get_counts(path.read_bytes())
+            print(to_string(*counts), path)
 
 
 def get_counts(raw_text):

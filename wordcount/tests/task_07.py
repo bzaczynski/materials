@@ -34,7 +34,7 @@ class Test:
             process = run(["wordcount", path1, path2, path3], capture_output=True)
             assert process.stdout.endswith(b" 3 10 66 total\n")
 
-    def test_repeats_the_same_file_multiple_times(self, make_file):
+    def test_can_repeat_the_same_file_multiple_times(self, make_file):
         with make_file(b"caffe latte\n") as path:
             process = run(["wordcount", path, path, path], capture_output=True)
             expected = (
@@ -46,10 +46,10 @@ class Test:
             assert process.stdout == expected.encode()
 
     @pytest.mark.skip
-    def test_repeats_standard_input_multiple_times(self, make_file):
+    def test_can_repeat_standard_input_multiple_times(self, make_file):
         pass
 
-    def test_mixes_files_with_standard_input(self, make_file):
+    def test_can_mix_files_with_standard_input(self, make_file):
         with make_file(b"Lorem ipsum dolor sit amet\n") as path:
             command = ["wordcount", path, "-"]
             process = run(command, capture_output=True, input=b"caffe latte")
@@ -70,18 +70,17 @@ class Test:
             ) as path3,
         ):
             expected = b"".join([
-                f"  1   1   6 {path1}".encode(),
-                b"  0   2  10",
-                f"  1   3  27 {path2}".encode(),
-                f"  0   0   0 {fake_dir} (is a directory)".encode(),
-                b"  0   0   0",
-                f"  6  69 447 {path3}".encode(),
-                f"  0   0   0 {random_filename} (no such file or directory)".encode(),
-                b"  8  75 490 total",
+                f"  1   1   6 {path1}\n".encode(),
+                b"  0   2  10\n",
+                f"  1   3  27 {path2}\n".encode(),
+                f"  0   0   0 {fake_dir}/ (is a directory)\n".encode(),
+                b"  0   0   0\n",
+                f"  6  69 447 {path3}\n".encode(),
+                f"  0   0   0 {random_filename} (no such file or directory)\n".encode(),
+                b"  8  75 490 total\n",
             ])
             command = ["wordcount", path1, "-", path2, fake_dir, "-", path3, random_filename]
             process = run(command, capture_output=True, input=b"flat white")
-            print(process.stdout.decode())
             assert process.stdout == expected
 
 
