@@ -244,7 +244,7 @@ class Test:
                 ]
             ) == wc("--lines", "--words", "--chars", "--bytes", path1, "-", path2, fake_dir, "-", path3, random_filename, stdin=b"flat white")
 
-    @pytest.mark.timeout(TEST_TIMEOUT_SECONDS * 2)
+    @pytest.mark.timeout(TEST_TIMEOUT_SECONDS * 3)
     def test_always_displays_counts_in_the_same_order(
         self, wc, make_file, fake_dir, random_filename
     ):

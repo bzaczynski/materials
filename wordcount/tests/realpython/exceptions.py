@@ -1,7 +1,3 @@
-class RealPythonException(Exception):
-    pass
-
-
 class RealPythonAssertionError(AssertionError):
     def __init__(self, expected, actual, message):
         self.expected = expected

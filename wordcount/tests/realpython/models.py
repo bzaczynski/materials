@@ -9,9 +9,8 @@ from typing import Iterator, Self
 
 from pytest import Cache, Function, Item, Session
 
-from . import RealPythonAssertionError
+from .exceptions import RealPythonAssertionError
 from .constants import CACHE_TASKS_KEY, STASH_REPORT_KEY
-from .exceptions import RealPythonException
 
 
 @dataclass(frozen=True)
@@ -86,6 +85,10 @@ class ExerciseProgress:
     cache: Cache
     root: dict
 
+    def __post_init__(self):
+        """Ensure that the "statuses" key is a defaultdict instance."""
+        self.root["statuses"] = defaultdict(dict, self.root.get("statuses", {}))
+
     @classmethod
     def from_cache(cls, cache: Cache) -> Self:
         return cls(
@@ -124,9 +127,7 @@ class ExerciseProgress:
             case {"failed": times} | {"timed_out": times}:
                 return times
             case unknown:
-                raise RealPythonException(
-                    f"Unknown cached test result: {unknown}"
-                )
+                raise ValueError(f"Unknown cached test result: {unknown}")
 
 
 @dataclass(frozen=True)
@@ -182,14 +183,14 @@ class TestRun:
         }:
             return TestStatus.PASSED
         else:
-            raise RealPythonException("None of the tests were executed")
+            raise ValueError("None of the tests were executed")
 
     def task(self, task_number: int) -> Task:
         for test in self.tests:
             if test.task_number == task_number:
                 if test.function and hasattr(test.function, "task"):
                     return test.function.task
-        raise RealPythonException(f"invalid task number {task_number}")
+        raise ValueError(f"invalid task number {task_number}")
 
     def task_status(self, task_number: int) -> TestStatus:
         statuses = {
@@ -205,4 +206,4 @@ class TestRun:
             else:
                 return TestStatus.PASSED
         else:
-            raise RealPythonException(f"invalid task number {task_number}")
+            raise ValueError(f"invalid task number {task_number}")

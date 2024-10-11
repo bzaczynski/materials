@@ -7,12 +7,12 @@ from operator import attrgetter
 from unittest.mock import Mock
 
 import pytest
+from _pytest.outcomes import OutcomeException
 from pytest import Config, Item, Parser, Session, TestReport
 
 from . import RealPythonAssertionError
 from .constants import (COMMAND_TASK, MIN_FAILURES_BEFORE_HINT,
                         STASH_REPORT_KEY, TEST_TIMEOUT_SECONDS)
-from .exceptions import RealPythonException
 from .models import ExerciseProgress, TestRun, TestStatus
 from .resources import Resource
 from .view import Display
@@ -21,11 +21,7 @@ error = False
 
 
 def pytest_exception_interact(call, report):
-    if call.excinfo.type is RealPythonException:
-        global error
-        error = True
-        traceback.print_exception(call.excinfo.value, file=sys.stderr)
-    elif call.excinfo.type is RealPythonAssertionError:
+    if call.excinfo.type is RealPythonAssertionError:
         report.exception = call.excinfo.value
     elif call.excinfo.type is AssertionError:
         try:
@@ -39,8 +35,12 @@ def pytest_exception_interact(call, report):
                     actual=None,
                     message=f"\N{ELECTRIC LIGHT BULB} {message}",
                 )
-    else:
+    elif issubclass(call.excinfo.type, OutcomeException):
         report.exception = None
+    else:
+        global error
+        error = True
+        traceback.print_exception(call.excinfo.value, file=sys.stderr)
 
 
 def pytest_collect_file(parent, file_path):
