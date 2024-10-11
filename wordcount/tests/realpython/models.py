@@ -54,28 +54,29 @@ class Test:
             return None
 
     @cached_property
-    def pretty_name(self):
-        # TODO Handle parameterized tests!
-        if self.function:
-            if docstring := self.function.__doc__:
-                return docstring
-        return self.name
-
-    @cached_property
     def name(self) -> str:
+        docstring = self.function.__doc__ if self.function else None
         full_name = self.id.split("::")[-1]
         if match := re.fullmatch(r"([^\[]+)(\[([^]]+)])?", full_name):
             function_name = match.group(1)
             params = match.group(3)
-            name = (
+            pretty_name = (
                 function_name.removeprefix("test_")
                 .replace("_", " ")
                 .capitalize()
             )
             if params:
-                return f"{name} ({params})"
-            return name
-        return full_name
+                if docstring:
+                    return f"{docstring} ({params})"
+                else:
+                    return f"{pretty_name} ({params})"
+            else:
+                if docstring:
+                    return docstring
+                else:
+                    return pretty_name
+        else:
+            return docstring if docstring else full_name
 
 
 @dataclass

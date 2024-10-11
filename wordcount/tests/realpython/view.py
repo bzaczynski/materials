@@ -88,7 +88,7 @@ def _tree(progress: ExerciseProgress, test_run: TestRun) -> Tree:
                 for test in task_tests:
                     color = _color(test.status)
                     icon = _icon(test.status)
-                    branch.add(f"[{color}]{icon} {test.pretty_name}[/]")
+                    branch.add(f"[{color}]{icon} {test.name}[/]")
     return tree
 
 

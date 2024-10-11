@@ -12,8 +12,8 @@
     - [x] Single options: `--lines`, `--words`, `--bytes`
     - [x] Formatting is still applied
     - [x] Can mix with files and stdin
-- [ ] Add the extra `--chars` option
-- [ ] Order is always the same
+- [x] Add the extra `--chars` option
+- [x] Order is always the same
 - [ ] Fix docstring of parametrized (!)
 
 TODO: Make the tests run _much_ faster.
@@ -34,7 +34,7 @@ Checklist:
 - [ ] Display helpful hints on failed assertions
 - [x] Implement a sample solution to the challenge
 - [x] Unwind the complete solution into a number of incremental steps that are small enough to follow easily on the CMS
-- [ ] (==in progress==) Implement thorough acceptance criteria as pytest assertions for each task
+- [x] Implement thorough acceptance criteria as pytest assertions for each task
 - [ ] Refactor the acceptance criteria to make the subsequent test runs a lot faster
 - [x] Set up a placeholder text-based course for the coding challenge on the CMS
 - [ ] (==in progress==) Create a lesson outlining the goal and acceptance criteria for each task on the CMS
