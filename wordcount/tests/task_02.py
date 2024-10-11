@@ -1,6 +1,6 @@
 from subprocess import run
 
-from realpython import task
+from realpython import assert_equals, task
 
 
 @task(
@@ -11,7 +11,7 @@ from realpython import task
 class Test:
     def test_reports_zeros_on_an_empty_stream(self):
         process = run(["wordcount"], capture_output=True)
-        assert process.stdout == b"0 0 0\n"
+        assert_equals(b"0 0 0\n", process.stdout)
 
     def test_handles_a_short_word_without_trailing_newline(self):
         process = run(["wordcount"], capture_output=True, input=b"caffe")

@@ -9,6 +9,7 @@ from typing import Iterator, Self
 
 from pytest import Cache, Function, Item, Session
 
+from . import RealPythonAssertionError
 from .constants import CACHE_TASKS_KEY, STASH_REPORT_KEY
 from .exceptions import RealPythonException
 
@@ -34,6 +35,7 @@ class TestStatus(Enum):
 class Test:
     item: Item
     status: TestStatus
+    exception: RealPythonAssertionError | None
 
     @cached_property
     def id(self) -> str:
@@ -139,7 +141,11 @@ class TestRun:
                     status = TestStatus.TIMED_OUT
                 else:
                     status = TestStatus(report.outcome)
-                tests.append(Test(item, status))
+                if hasattr(report, "exception"):
+                    exception = report.exception
+                else:
+                    exception = None
+                tests.append(Test(item, status, exception))
         return cls(tuple(tests))
 
     @cached_property

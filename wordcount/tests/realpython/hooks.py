@@ -9,7 +9,7 @@ from unittest.mock import Mock
 import pytest
 from pytest import Config, Item, Parser, Session, TestReport
 
-
+from . import RealPythonAssertionError
 from .constants import (COMMAND_TASK, MIN_FAILURES_BEFORE_HINT,
                         STASH_REPORT_KEY, TEST_TIMEOUT_SECONDS)
 from .exceptions import RealPythonException
@@ -20,11 +20,15 @@ from .view import Display
 error = False
 
 
-def pytest_exception_interact(call):
+def pytest_exception_interact(call, report):
     global error
     if call.excinfo.type is RealPythonException:
         traceback.print_exception(call.excinfo.value, file=sys.stderr)
         error = True
+    elif call.excinfo.type is RealPythonAssertionError:
+        report.exception = call.excinfo.value
+    else:
+        report.exception = None
 
 
 def pytest_collect_file(parent, file_path):

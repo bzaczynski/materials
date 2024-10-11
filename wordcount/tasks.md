@@ -14,11 +14,9 @@
     - [x] Can mix with files and stdin
 - [x] Add the extra `--chars` option
 - [x] Order is always the same
-- [ ] Fix docstring of parametrized (!)
-
-TODO: Make the tests run _much_ faster.
-TODO: Give some feedback, like why the assertion is failing (expected vs actual)
-TODO: docstrings and parametrized tests!
+- [x] Fix docstring of parametrized
+- [x] Give some feedback, like why the assertion is failing (expected vs actual)
+- [ ] Make the tests run _much_ faster.
 
 
 Checklist:
@@ -31,7 +29,7 @@ Checklist:
 - [x] Pretty print the acceptance criteria based on the names of the corresponding test functions or fall back to using docstrings where available in order to allow punctuation and special characters to appear in the summary
 - [x] Associate various kinds of Real Python resources with tasks or their individual acceptance criteria and display them after a few unsuccessful attempts as a form of help for the user
 - [x] Implement the unlocking mechanism for the next task upon completion of the current task so that the user only sees relevant acceptance criteria in the summary
-- [ ] Display helpful hints on failed assertions
+- [x] Display helpful hints on failed assertions
 - [x] Implement a sample solution to the challenge
 - [x] Unwind the complete solution into a number of incremental steps that are small enough to follow easily on the CMS
 - [x] Implement thorough acceptance criteria as pytest assertions for each task

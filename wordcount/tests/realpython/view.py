@@ -1,3 +1,5 @@
+import os
+
 from pytest import Config
 from rich.console import Console, Group
 from rich.markdown import Markdown
@@ -5,8 +7,10 @@ from rich.panel import Panel
 from rich.progress import BarColumn
 from rich.progress import Progress as ProgressBar
 from rich.progress import TextColumn
+from rich.table import Table
 from rich.tree import Tree
 
+from . import RealPythonAssertionError
 from .models import ExerciseProgress, Task, TestRun, TestStatus
 from .readme import Readme
 from .resources import Resource
@@ -82,13 +86,15 @@ def _tree(progress: ExerciseProgress, test_run: TestRun) -> Tree:
                 task_status = test_run.task_status(task_number)
                 color = _color(task_status)
                 icon = _icon(task_status)
-                branch = tree.add(
+                task_branch = tree.add(
                     f"[{color}][b]{icon} Task {task_number}: {task.name}[/]"
                 )
                 for test in task_tests:
                     color = _color(test.status)
                     icon = _icon(test.status)
-                    branch.add(f"[{color}]{icon} {test.name}[/]")
+                    test_branch = task_branch.add(f"[{color}]{icon} {test.name}[/]")
+                    if test.status is TestStatus.FAILED and test.exception:
+                        test_branch.add(_assertion(test.exception))
     return tree
 
 
@@ -121,3 +127,30 @@ def _icon(status: TestStatus) -> str:
         TestStatus.FAILED: "\N{BALLOT X}",
         TestStatus.TIMED_OUT: "\N{STOPWATCH}",
     }.get(status, "")
+
+
+def _assertion(exception: RealPythonAssertionError) -> Panel:
+    def repr_(value):
+        if isinstance(value, bytes):
+            return repr(value.decode("utf-8"))
+        if isinstance(value, str):
+            return repr(value)
+        return repr(value)
+
+    table = Table(show_edge=False, style="red")
+    table.add_column("Expected", header_style="red")
+    table.add_column("Actual", header_style="red")
+    table.add_row(
+        Markdown(f"```python\n{repr_(exception.expected)}\n```"),
+        Markdown(f"```python\n{repr_(exception.actual)}\n```"),
+    )
+    elements = []
+    if exception.message:
+        elements.append(Markdown(exception.message))
+        elements.append("")
+    elements.append(table)
+    return Panel(
+        Group(*elements),
+        width=round(os.get_terminal_size().columns * 0.4),
+        border_style="red"
+    )
