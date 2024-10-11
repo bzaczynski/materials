@@ -23,7 +23,7 @@ class Test:
 
     def test_delimits_words_on_whitespace(self):
         process = run(["wordcount"], capture_output=True, input=b"back-end\n")
-        assert process.stdout == b"1 1 9\n"
+        assert process.stdout == b"1 1 9\n", "Watch out for punctuation and special characters"
 
     def test_handles_linux_newline(self):
         r"""Handles the Linux newline (\n)"""

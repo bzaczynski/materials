@@ -137,18 +137,20 @@ def _assertion(exception: RealPythonAssertionError) -> Panel:
             return repr(value)
         return repr(value)
 
-    table = Table(show_edge=False, style="red")
-    table.add_column("Expected", header_style="red")
-    table.add_column("Actual", header_style="red")
-    table.add_row(
-        Markdown(f"```python\n{repr_(exception.expected)}\n```"),
-        Markdown(f"```python\n{repr_(exception.actual)}\n```"),
-    )
     elements = []
     if exception.message:
         elements.append(Markdown(exception.message))
-        elements.append("")
-    elements.append(table)
+    if exception.expected != exception.actual:
+        table = Table(show_edge=False, style="red")
+        table.add_column("Expected", header_style="red")
+        table.add_column("Actual", header_style="red")
+        table.add_row(
+            Markdown(f"```python\n{repr_(exception.expected)}\n```"),
+            Markdown(f"```python\n{repr_(exception.actual)}\n```"),
+        )
+        elements.append(table)
+    if len(elements) == 2:
+        elements.insert(1, "")
     return Panel(
         Group(*elements),
         width=round(os.get_terminal_size().columns * 0.4),

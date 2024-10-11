@@ -21,12 +21,21 @@ error = False
 
 
 def pytest_exception_interact(call, report):
-    global error
     if call.excinfo.type is RealPythonException:
-        traceback.print_exception(call.excinfo.value, file=sys.stderr)
+        global error
         error = True
+        traceback.print_exception(call.excinfo.value, file=sys.stderr)
     elif call.excinfo.type is RealPythonAssertionError:
         report.exception = call.excinfo.value
+    elif call.excinfo.type is AssertionError:
+        try:
+            report.exception = RealPythonAssertionError(
+                expected=None,
+                actual=None,
+                message=f"\N{ELECTRIC LIGHT BULB} {call.excinfo.value.args[0]}"
+            )
+        except IndexError:
+            pass
     else:
         report.exception = None
 
