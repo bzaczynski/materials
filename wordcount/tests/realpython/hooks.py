@@ -148,7 +148,13 @@ def pytest_sessionfinish(session: Session):
             next_task = test_run.task(progress.last_unlocked)
             display.unlocked(next_task)
         else:
-            display.congratulations()
+            if session.config.option.keyword or session.config.option.lf:
+                # Don't show congratulations when running a subset of tests
+                # pytest -k <expression>
+                # pytest --last-failed
+                pass
+            else:
+                display.congratulations()
     else:
         if resources := _get_resources(progress, test_run):
             display.hint(resources)
