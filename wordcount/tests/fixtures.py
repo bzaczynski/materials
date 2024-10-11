@@ -17,17 +17,18 @@ class FakeFile:
     content: bytes
     counts: tuple[int, ...]
 
+    def __post_init__(self):
+        self.path.write_bytes(self.content)
+
     @cached_property
     def path(self) -> Path:
         name = "".join(random.choices(ascii_lowercase, k=10))
         return Path(gettempdir()) / name
 
-    def create(self):
-        self.path.write_bytes(self.content)
-
     # def format_line(self, max_digits, selected_counts):
     def format_line(self):
-        return f" 1  2 12 {self.path}\n".encode("utf-8")
+        md = len(str(max(self.counts)))
+        return f"{self.counts[0]:{md}} {self.counts[1]:{md}} {self.counts[2]:{md}} {self.path}\n".encode("utf-8")
         # TODO
         # return " ".join(
         #     f"{number:>{max_digits}}"
@@ -39,6 +40,50 @@ class FakeFile:
             self.path.rmdir()
         elif self.path.is_file():
             self.path.unlink(missing_ok=True)
+
+# use all files in a loop instead of a single file?
+
+@pytest.fixture(scope="session")
+def small_files():
+    fake_files = [
+        FakeFile(
+            content=b"Mocha",
+            counts=(0, 1, 5, 5)
+        ),
+        FakeFile(
+            content=b"Espresso\n",
+            counts=(1, 1, 9, 9)
+        ),
+        FakeFile(
+            content=b"Cappuccino\n",
+            counts=(1, 1, 11, 11)
+        ),
+        FakeFile(
+            content=b"Frappuccino",
+            counts=(0, 1, 11, 11)
+        ),
+        FakeFile(
+            content=b"Flat White\n",
+            counts=(1, 2, 11, 11)
+        ),
+        FakeFile(
+            content=b"Turkish Coffee",
+            counts=(0, 2, 14, 14)
+        ),
+        FakeFile(
+            content=b"Irish Coffee Drink\n",
+            counts=(1, 3, 19, 19)
+        ),
+        FakeFile(
+            content=b"Espresso con Panna",
+            counts=(0, 3, 18, 18)
+        ),
+    ]
+    try:
+        yield fake_files
+    finally:
+        for file in fake_files:
+            file.delete()
 
 
 @pytest.fixture(scope="session")

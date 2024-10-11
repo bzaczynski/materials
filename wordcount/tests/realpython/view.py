@@ -155,6 +155,6 @@ def _assertion(exception: RealPythonAssertionError) -> Panel:
         elements.insert(1, "")
     return Panel(
         Group(*elements),
-        width=round(os.get_terminal_size().columns * 0.45),
+        width=round(os.get_terminal_size().columns * 0.5),
         border_style="red",
     )
