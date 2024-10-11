@@ -39,7 +39,7 @@ class Display:
 
     def congratulations(self) -> None:
         self.print(
-            "Congratulations! You've completed the exercise "
+            "Congratulations! You've completed the whole coding challenge "
             "\N{FACE WITH PARTY HORN AND PARTY HAT}"
         )
 

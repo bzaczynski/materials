@@ -16,53 +16,53 @@ class Test:
     def test_only_counts_characters_in_stdin(self):
         command = ["wordcount", "--chars"]
         process = run(command, capture_output=True, input="zażółć\ngęślą\njaźń\n".encode("utf-8"))
-        assert process.stdout == b"18\n"
+        assert b"18\n" == process.stdout
 
     def test_counts_characters_and_bytes_in_stdin(self):
         command = ["wordcount", "--chars", "--bytes"]
         process = run(command, capture_output=True, input="zażółć\ngęślą jaźń\n".encode("utf-8"))
-        assert process.stdout == b"18 27\n"
+        assert b"18 27\n" == process.stdout
 
     def test_counts_words_and_characters_in_stdin(self):
         command = ["wordcount", "--words", "--chars"]
         process = run(command, capture_output=True, input="zażółć\ngęślą jaźń\n".encode("utf-8"))
-        assert process.stdout == b" 3 18\n"
+        assert b" 3 18\n" == process.stdout
 
     def test_counts_words_characters_bytes_in_stdin(self):
         """Counts words, characters, and bytes in stdin"""
         command = ["wordcount", "--words", "--chars", "--bytes"]
         process = run(command, capture_output=True, input="zażółć\ngęślą jaźń\n".encode("utf-8"))
-        assert process.stdout == b" 3 18 27\n"
+        assert b" 3 18 27\n" == process.stdout
 
     def test_counts_lines_and_characters_in_stdin(self):
         command = ["wordcount", "--lines", "--chars"]
         process = run(command, capture_output=True, input="zażółć\ngęślą jaźń\n".encode("utf-8"))
-        assert process.stdout == b" 2 18\n"
+        assert b" 2 18\n" == process.stdout
 
     def test_counts_lines_characters_bytes_in_stdin(self):
         """Counts lines, characters, and bytes in stdin"""
         command = ["wordcount", "--lines", "--chars", "--bytes"]
         process = run(command, capture_output=True, input="zażółć\ngęślą jaźń\n".encode("utf-8"))
-        assert process.stdout == b" 2 18 27\n"
+        assert b" 2 18 27\n" == process.stdout
 
     def test_counts_lines_words_characters_in_stdin(self):
         """Counts lines, words, and characters in stdin"""
         command = ["wordcount", "--lines", "--words", "--chars"]
         process = run(command, capture_output=True, input="zażółć\ngęślą jaźń\n".encode("utf-8"))
-        assert process.stdout == b" 2  3 18\n"
+        assert b" 2  3 18\n" == process.stdout
 
     def test_counts_lines_words_characters_bytes_in_stdin(self):
         """Counts lines, words, characters, and bytes in stdin"""
         command = ["wordcount", "--lines", "--words", "--chars", "--bytes"]
         process = run(command, capture_output=True, input="zażółć\ngęślą jaźń\n".encode("utf-8"))
-        assert process.stdout == b" 2  3 18 27\n"
+        assert b" 2  3 18 27\n" == process.stdout
 
     @pytest.mark.timeout(TEST_TIMEOUT_SECONDS * 2)
     def test_always_displays_counts_of_stdin_in_the_same_order(self):
         for flags in permutations(["--lines", "--words", "--chars", "--bytes"]):
             command = ["wordcount", *flags]
             process = run(command, capture_output=True, input="zażółć\ngęślą jaźń\n".encode("utf-8"))
-            assert process.stdout == b" 2  3 18 27\n"
+            assert b" 2  3 18 27\n" == process.stdout
 
     def test_only_counts_characters(self, make_file, fake_dir, random_filename):
         with (
@@ -92,7 +92,7 @@ class Test:
                 path1, "-", path2, fake_dir, "-", path3, random_filename
             ]
             process = run(command, capture_output=True, input=b"flat white")
-            assert process.stdout == expected
+            assert expected == process.stdout
 
     def test_counts_characters_and_bytes(self, make_file, fake_dir, random_filename):
         with (
@@ -122,7 +122,7 @@ class Test:
                 path1, "-", path2, fake_dir, "-", path3, random_filename
             ]
             process = run(command, capture_output=True, input=b"flat white")
-            assert process.stdout == expected
+            assert expected == process.stdout
 
     def test_counts_words_and_characters(self, make_file, fake_dir, random_filename):
         with (
@@ -152,7 +152,7 @@ class Test:
                 path1, "-", path2, fake_dir, "-", path3, random_filename
             ]
             process = run(command, capture_output=True, input=b"flat white")
-            assert process.stdout == expected
+            assert expected == process.stdout
 
     def test_counts_words_characters_bytes(self, make_file, fake_dir, random_filename):
         """Counts words, characters, and bytes in stdin"""
@@ -183,7 +183,7 @@ class Test:
                 path1, "-", path2, fake_dir, "-", path3, random_filename
             ]
             process = run(command, capture_output=True, input=b"flat white")
-            assert process.stdout == expected
+            assert expected == process.stdout
 
     def test_counts_lines_and_characters(self, make_file, fake_dir, random_filename):
         with (
@@ -213,7 +213,7 @@ class Test:
                 path1, "-", path2, fake_dir, "-", path3, random_filename
             ]
             process = run(command, capture_output=True, input=b"flat white")
-            assert process.stdout == expected
+            assert expected == process.stdout
 
     def test_counts_lines_characters_bytes(self, make_file, fake_dir, random_filename):
         """Counts lines, characters, and bytes in stdin"""
@@ -244,7 +244,7 @@ class Test:
                 path1, "-", path2, fake_dir, "-", path3, random_filename
             ]
             process = run(command, capture_output=True, input=b"flat white")
-            assert process.stdout == expected
+            assert expected == process.stdout
 
     def test_counts_lines_words_characters(self, make_file, fake_dir, random_filename):
         """Counts lines, words, and characters in stdin"""
@@ -275,7 +275,7 @@ class Test:
                 path1, "-", path2, fake_dir, "-", path3, random_filename
             ]
             process = run(command, capture_output=True, input=b"flat white")
-            assert process.stdout == expected
+            assert expected == process.stdout
 
     def test_counts_lines_words_characters_bytes(self, make_file, fake_dir, random_filename):
         """Counts lines, words, characters, and bytes in stdin"""
@@ -306,7 +306,7 @@ class Test:
                 path1, "-", path2, fake_dir, "-", path3, random_filename
             ]
             process = run(command, capture_output=True, input=b"flat white")
-            assert process.stdout == expected
+            assert expected == process.stdout
 
     @pytest.mark.timeout(TEST_TIMEOUT_SECONDS * 2)
     def test_always_displays_counts_in_the_same_order(self, make_file, fake_dir, random_filename):
@@ -338,4 +338,4 @@ class Test:
                     path1, "-", path2, fake_dir, "-", path3, random_filename
                 ]
                 process = run(command, capture_output=True, input=b"flat white")
-                assert process.stdout == expected
+                assert expected == process.stdout

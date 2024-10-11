@@ -223,6 +223,8 @@ class Test:
         assert_equals("expected", function())
 ```
 
+Note that the messages support the Markdown syntax, so you can include links and the desired font formatting.
+
 ## Using the CLI
 
 Run all test methods up to the current task:

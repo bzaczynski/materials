@@ -41,14 +41,14 @@ class Test:
                 f" 1  2 12 {path}\n"
                 f" 3  6 36 total\n"
             )
-            assert process.stdout == expected.encode()
+            assert expected.encode() == process.stdout
 
     def test_can_mix_files_with_standard_input(self, make_file):
         with make_file(b"Lorem ipsum dolor sit amet\n") as path:
             command = ["wordcount", path, "-"]
             process = run(command, capture_output=True, input=b"caffe latte")
             expected = f" 1  5 27 {path}\n 0  2 11\n 1  7 38 total\n"
-            assert process.stdout == expected.encode()
+            assert expected.encode() == process.stdout
 
     # @pytest.mark.skip
     # def test_can_repeat_standard_input_multiple_times(self, make_file):

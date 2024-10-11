@@ -34,4 +34,4 @@ class Test:
             ])
             command = ["wordcount", path1, "-", path2, fake_dir, "-", path3, random_filename]
             process = run(command, capture_output=True, input=b"flat white")
-            assert process.stdout == expected
+            assert expected == process.stdout

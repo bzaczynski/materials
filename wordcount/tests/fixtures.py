@@ -7,6 +7,10 @@ from tempfile import TemporaryDirectory, gettempdir
 
 import pytest
 
+
+# TODO run_process(...args) convenience fixture to avoid code duplication
+
+
 # TODO session-scoped fixtures with files that will be removed afterwards?
 
 

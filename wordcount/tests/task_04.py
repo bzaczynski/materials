@@ -11,19 +11,19 @@ from realpython import task
 class Test:
     def test_long_word_without_trailing_newline(self):
         process = run(["wordcount"], capture_output=True, input=b"floccinaucinihilipilification")
-        assert process.stdout == b" 0  1 29\n"
+        assert b" 0  1 29\n" == process.stdout
 
     def test_long_word_with_trailing_newline(self):
         process = run(["wordcount"], capture_output=True, input=b"floccinaucinihilipilification\n")
-        assert process.stdout == b" 1  1 30\n"
+        assert b" 1  1 30\n" == process.stdout
 
     def test_multiple_words_without_trailing_newline(self):
         process = run(["wordcount"], capture_output=True, input=b"Lorem ipsum dolor sit amet")
-        assert process.stdout == b" 0  5 26\n"
+        assert b" 0  5 26\n" == process.stdout
 
     def test_multiple_words_with_trailing_newline(self):
         process = run(["wordcount"], capture_output=True, input=b"Lorem ipsum dolor sit amet\n")
-        assert process.stdout == b" 1  5 27\n"
+        assert b" 1  5 27\n" == process.stdout
 
     def test_long_text_multiple_lines(self):
         process = run(["wordcount"], capture_output=True, input=(
@@ -34,4 +34,4 @@ class Test:
             b"cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\n"
             b"proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n"
         ))
-        assert process.stdout == b"  6  69 447\n"
+        assert b"  6  69 447\n" == process.stdout

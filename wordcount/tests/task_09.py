@@ -14,49 +14,49 @@ class Test:
         """Counts lines, words, and bytes in stdin by default"""
         command = ["wordcount"]
         process = run(command, capture_output=True, input=b"caffe\nlatte\nflat white\n")
-        assert process.stdout == b" 3  4 23\n"
+        assert b" 3  4 23\n" == process.stdout
 
     def test_counts_lines_words_bytes_in_stdin_explicitly(self):
         """Counts lines, words, and bytes in stdin explicitly"""
         command = ["wordcount", "--lines", "--words", "--bytes"]
         process = run(command, capture_output=True, input=b"caffe\nlatte\nflat white\n")
-        assert process.stdout == b" 3  4 23\n"
+        assert b" 3  4 23\n" == process.stdout
 
     def test_only_counts_lines_in_stdin(self):
         command = ["wordcount", "--lines"]
         process = run(command, capture_output=True, input=b"caffe\nlatte\nflat white\n")
-        assert process.stdout == b"3\n"
+        assert b"3\n" == process.stdout
 
     def test_only_counts_words_in_stdin(self):
         command = ["wordcount", "--words"]
         process = run(command, capture_output=True, input=b"caffe\nlatte\nflat white\n")
-        assert process.stdout == b"4\n"
+        assert b"4\n" == process.stdout
 
     def test_only_counts_bytes_in_stdin(self):
         command = ["wordcount", "--bytes"]
         process = run(command, capture_output=True, input=b"caffe\nlatte\nflat white\n")
-        assert process.stdout == b"23\n"
+        assert b"23\n" == process.stdout
 
     def test_counts_lines_and_words_in_stdin(self):
         command = ["wordcount", "--lines", "--words"]
         process = run(command, capture_output=True, input=b"caffe\nlatte\nflat white\n")
-        assert process.stdout == b"3 4\n"
+        assert b"3 4\n" == process.stdout
 
     def test_counts_lines_and_bytes_in_stdin(self):
         command = ["wordcount", "--lines", "--bytes"]
         process = run(command, capture_output=True, input=b"caffe\nlatte\nflat white\n")
-        assert process.stdout == b" 3 23\n"
+        assert b" 3 23\n" == process.stdout
 
     def test_counts_words_and_bytes_in_stdin(self):
         command = ["wordcount", "--words", "--bytes"]
         process = run(command, capture_output=True, input=b"caffe\nlatte\nflat white\n")
-        assert process.stdout == b" 4 23\n"
+        assert b" 4 23\n" == process.stdout
 
     def test_always_displays_counts_of_stdin_in_the_same_order(self):
         for flags in permutations(["--lines", "--words", "--bytes"]):
             command = ["wordcount", *flags]
             process = run(command, capture_output=True, input=b"caffe\nlatte\nflat white\n")
-            assert process.stdout == b" 3  4 23\n"
+            assert b" 3  4 23\n" == process.stdout
 
     def test_counts_lines_words_bytes_by_default(self, make_file, fake_dir, random_filename):
         """Counts lines, words, and bytes by default"""
@@ -84,7 +84,7 @@ class Test:
             ])
             command = ["wordcount", path1, "-", path2, fake_dir, "-", path3, random_filename]
             process = run(command, capture_output=True, input=b"flat white")
-            assert process.stdout == expected
+            assert expected == process.stdout
 
     def test_counts_lines_words_bytes_explicitly(self, make_file, fake_dir, random_filename):
         """Counts lines, words, and bytes explicitly"""
@@ -115,7 +115,7 @@ class Test:
                 path1, "-", path2, fake_dir, "-", path3, random_filename
             ]
             process = run(command, capture_output=True, input=b"flat white")
-            assert process.stdout == expected
+            assert expected == process.stdout
 
     def test_only_counts_lines(self, make_file, fake_dir, random_filename):
         with (
@@ -145,7 +145,7 @@ class Test:
                 path1, "-", path2, fake_dir, "-", path3, random_filename
             ]
             process = run(command, capture_output=True, input=b"flat white")
-            assert process.stdout == expected
+            assert expected == process.stdout
 
     def test_only_counts_words(self, make_file, fake_dir, random_filename):
         with (
@@ -175,7 +175,7 @@ class Test:
                 path1, "-", path2, fake_dir, "-", path3, random_filename
             ]
             process = run(command, capture_output=True, input=b"flat white")
-            assert process.stdout == expected
+            assert expected == process.stdout
 
     def test_only_counts_bytes(self, make_file, fake_dir, random_filename):
         with (
@@ -205,7 +205,7 @@ class Test:
                 path1, "-", path2, fake_dir, "-", path3, random_filename
             ]
             process = run(command, capture_output=True, input=b"flat white")
-            assert process.stdout == expected
+            assert expected == process.stdout
 
     def test_counts_lines_and_words(self, make_file, fake_dir, random_filename):
         with (
@@ -235,7 +235,7 @@ class Test:
                 path1, "-", path2, fake_dir, "-", path3, random_filename
             ]
             process = run(command, capture_output=True, input=b"flat white")
-            assert process.stdout == expected
+            assert expected == process.stdout
 
     def test_counts_lines_and_bytes(self, make_file, fake_dir, random_filename):
         with (
@@ -265,7 +265,7 @@ class Test:
                 path1, "-", path2, fake_dir, "-", path3, random_filename
             ]
             process = run(command, capture_output=True, input=b"flat white")
-            assert process.stdout == expected
+            assert expected == process.stdout
 
     def test_counts_words_and_bytes(self, make_file, fake_dir, random_filename):
         with (
@@ -295,7 +295,7 @@ class Test:
                 path1, "-", path2, fake_dir, "-", path3, random_filename
             ]
             process = run(command, capture_output=True, input=b"flat white")
-            assert process.stdout == expected
+            assert expected == process.stdout
 
     def test_always_displays_counts_in_the_same_order(self, make_file, fake_dir, random_filename):    #
         with (
@@ -326,4 +326,4 @@ class Test:
                     path1, "-", path2, fake_dir, "-", path3, random_filename
                 ]
                 process = run(command, capture_output=True, input=b"flat white")
-                assert process.stdout == expected
+                assert expected == process.stdout

@@ -15,27 +15,27 @@ class Test:
 
     def test_handles_a_short_word_without_trailing_newline(self):
         process = run(["wordcount"], capture_output=True, input=b"caffe")
-        assert process.stdout == b"0 1 5\n"
+        assert b"0 1 5\n" == process.stdout
 
     def test_handles_a_short_word_with_trailing_newline(self):
         process = run(["wordcount"], capture_output=True, input=b"caffe\n")
-        assert process.stdout == b"1 1 6\n"
+        assert b"1 1 6\n" == process.stdout
 
     def test_delimits_words_on_whitespace(self):
         process = run(["wordcount"], capture_output=True, input=b"back-end\n")
-        assert process.stdout == b"1 1 9\n", "Watch out for punctuation and special characters"
+        assert b"1 1 9\n" == process.stdout, "Pay attention to punctuation and special characters"
 
     def test_handles_linux_newline(self):
         r"""Handles the Linux newline (\n)"""
         process = run(["wordcount"], capture_output=True, input=b"hot\ntea")
-        assert process.stdout == b"1 2 7\n"
+        assert b"1 2 7\n" == process.stdout
 
     def test_handles_macos_newline(self):
         r"""Handles the macOS newline (\r)"""
         process = run(["wordcount"], capture_output=True, input=b"hot\rtea")
-        assert process.stdout == b"0 2 7\n"
+        assert b"0 2 7\n" == process.stdout
 
     def test_handles_windows_newline(self):
         r"""Handles the Windows newline (\r\n)"""
         process = run(["wordcount"], capture_output=True, input=b"hot\r\ntea")
-        assert process.stdout == b"1 2 8\n"
+        assert b"1 2 8\n" == process.stdout
