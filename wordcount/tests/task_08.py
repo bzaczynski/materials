@@ -1,5 +1,3 @@
-from subprocess import run
-
 from realpython import task
 
 
@@ -9,7 +7,9 @@ from realpython import task
     url="TODO",
 )
 class Test:
-    def test_uses_consistent_formatting_across_lines(self, make_file, fake_dir, random_filename):
+    def test_uses_consistent_formatting_across_lines(
+        self, wc, make_file, fake_dir, random_filename
+    ):
         with (
             make_file(b"short\n") as path1,
             make_file("Zażółć gęślą jaźń\n".encode("utf-8")) as path2,
@@ -22,16 +22,25 @@ class Test:
                 b"proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n"
             ) as path3,
         ):
-            expected = b"".join([
-                f"  1   1   6 {path1}\n".encode(),
-                b"  0   2  10\n",
-                f"  1   3  27 {path2}\n".encode(),
-                f"  0   0   0 {fake_dir}/ (is a directory)\n".encode(),
-                b"  0   0   0\n",
-                f"  6  69 447 {path3}\n".encode(),
-                f"  0   0   0 {random_filename} (no such file or directory)\n".encode(),
-                b"  8  75 490 total\n",
-            ])
-            command = ["wordcount", path1, "-", path2, fake_dir, "-", path3, random_filename]
-            process = run(command, capture_output=True, input=b"flat white")
-            assert expected == process.stdout
+            expected = b"".join(
+                [
+                    f"  1   1   6 {path1}\n".encode(),
+                    b"  0   2  10\n",
+                    f"  1   3  27 {path2}\n".encode(),
+                    f"  0   0   0 {fake_dir}/ (is a directory)\n".encode(),
+                    b"  0   0   0\n",
+                    f"  6  69 447 {path3}\n".encode(),
+                    f"  0   0   0 {random_filename} (no such file or directory)\n".encode(),
+                    b"  8  75 490 total\n",
+                ]
+            )
+            assert expected == wc(
+                path1,
+                "-",
+                path2,
+                fake_dir,
+                "-",
+                path3,
+                random_filename,
+                stdin=b"flat white",
+            )

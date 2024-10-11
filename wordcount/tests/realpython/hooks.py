@@ -29,13 +29,16 @@ def pytest_exception_interact(call, report):
         report.exception = call.excinfo.value
     elif call.excinfo.type is AssertionError:
         try:
-            report.exception = RealPythonAssertionError(
-                expected=None,
-                actual=None,
-                message=f"\N{ELECTRIC LIGHT BULB} {call.excinfo.value.args[0]}"
-            )
+            message = call.excinfo.value.args[0]
         except IndexError:
             pass
+        else:
+            if message:
+                report.exception = RealPythonAssertionError(
+                    expected=None,
+                    actual=None,
+                    message=f"\N{ELECTRIC LIGHT BULB} {message}",
+                )
     else:
         report.exception = None
 
@@ -63,7 +66,7 @@ def pytest_configure(config: Config) -> None:
 
     # Disable stdout/stderr capturing unless explicitly enabled:
     if not any(
-            x.startswith("--capture") for x in config.invocation_params.args
+        x.startswith("--capture") for x in config.invocation_params.args
     ):
         _disable_plugin(config, "capturemanager")
 
@@ -168,7 +171,7 @@ def _new_task_unlocked(progress: ExerciseProgress, test_run: TestRun) -> bool:
 
 
 def _get_resources(
-        progress: ExerciseProgress, test_run: TestRun
+    progress: ExerciseProgress, test_run: TestRun
 ) -> list[Resource]:
     return sorted(
         set(

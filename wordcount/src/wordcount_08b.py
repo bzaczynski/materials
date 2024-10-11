@@ -52,7 +52,7 @@ class FileInfo:
                 lines=text.count("\n"),
                 words=len(text.split()),
                 bytes=len(raw_text),
-            )
+            ),
         )
 
 

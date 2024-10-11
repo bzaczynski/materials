@@ -1,5 +1,8 @@
 """
 Add the ability to read from a file using sys.argv[1].
+
+Note that you get the second acceptance criteria successful for free now,
+but only until using sys.argv.
 """
 
 import sys

@@ -124,7 +124,9 @@ class ExerciseProgress:
             case {"failed": times} | {"timed_out": times}:
                 return times
             case unknown:
-                raise RealPythonException(f"Unknown cached test result: {unknown}")
+                raise RealPythonException(
+                    f"Unknown cached test result: {unknown}"
+                )
 
 
 @dataclass(frozen=True)

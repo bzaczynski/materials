@@ -79,7 +79,7 @@ class FileInfo:
                 words=len(text.split()),
                 chars=len(text),
                 bytes=len(raw_text),
-            )
+            ),
         )
 
 

@@ -42,3 +42,4 @@ Checklist:
 - [x] Leverage GitHub Codepages for running the individual challenges in the materials monorepo through dedicated `devcontainer.json` configurations as a convenience for beginners who don't want to or know how to run the challenge locally
 - [ ] Make a (cookiecutter?) template for the coding challenge project to allow quick bootstrapping of future challenges
 - [ ] Extract the pytest-realpython plugin from the `tests/` folder into its own Git repository, set up CI/CD automation, publish to PyPI, etc.
+- [ ] Do not show congratulations or yay! promoted message when calling (pytest -k) with a subset

@@ -20,5 +20,5 @@ class Test:
             message=(
                 "The process should return a zero [exit status]"
                 "(https://en.wikipedia.org/wiki/Exit_status) code"
-            )
+            ),
         )

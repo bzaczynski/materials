@@ -23,7 +23,9 @@ class Arguments(Namespace):
     @cached_property
     def selected_counts(self):
         selected = self.lines | self.words | self.bytes
-        return selected or SelectedCounts.DEFAULT  # Short-circuit evaluation, "or"
+        return (
+            selected or SelectedCounts.DEFAULT
+        )  # Short-circuit evaluation, "or"
 
 
 class Counts(NamedTuple):
@@ -75,7 +77,7 @@ class FileInfo:
                 lines=text.count("\n"),
                 words=len(text.split()),
                 bytes=len(raw_text),
-            )
+            ),
         )
 
 

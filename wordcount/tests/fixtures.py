@@ -1,20 +1,23 @@
 import random
 import string
-
 from contextlib import contextmanager
 from pathlib import Path
+from subprocess import run
 from tempfile import TemporaryDirectory, gettempdir
 
 import pytest
 
 
-# TODO run_process(...args) convenience fixture to avoid code duplication
-
-
-# TODO session-scoped fixtures with files that will be removed afterwards?
-
-
 @pytest.fixture
+def wc():
+    def function(*args, stdin: bytes | None = None) -> bytes:
+        process = run(["wordcount", *args], capture_output=True, input=stdin)
+        return process.stdout
+
+    return function
+
+
+@pytest.fixture(scope="session")
 def fake_dir():
     with TemporaryDirectory(delete=False) as directory:
         path = Path(directory)
@@ -41,7 +44,7 @@ def make_file():
     return factory
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def random_filename():
     return make_random_filename()
 

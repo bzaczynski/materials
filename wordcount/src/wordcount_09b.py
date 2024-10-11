@@ -23,7 +23,9 @@ class Arguments(Namespace):
     @cached_property
     def selected_counts(self):
         selected = self.lines | self.words | self.bytes
-        return selected or SelectedCounts.DEFAULT  # Short-circuit evaluation, "or"
+        return (
+            selected or SelectedCounts.DEFAULT
+        )  # Short-circuit evaluation, "or"
 
 
 class Counts(NamedTuple):
@@ -75,7 +77,7 @@ class FileInfo:
                 lines=text.count("\n"),
                 words=len(text.split()),
                 bytes=len(raw_text),
-            )
+            ),
         )
 
 
@@ -98,7 +100,9 @@ def main():
         else:
             print(line, info.path)
     if len(file_infos) > 1:
-        print(total_counts.as_string(max_digits, args.selected_counts), "total")
+        print(
+            total_counts.as_string(max_digits, args.selected_counts), "total"
+        )
 
 
 def parse_args():

@@ -92,7 +92,9 @@ def _tree(progress: ExerciseProgress, test_run: TestRun) -> Tree:
                 for test in task_tests:
                     color = _color(test.status)
                     icon = _icon(test.status)
-                    test_branch = task_branch.add(f"[{color}]{icon} {test.name}[/]")
+                    test_branch = task_branch.add(
+                        f"[{color}]{icon} {test.name}[/]"
+                    )
                     if test.status is TestStatus.FAILED and test.exception:
                         test_branch.add(_assertion(test.exception))
     return tree
@@ -153,6 +155,6 @@ def _assertion(exception: RealPythonAssertionError) -> Panel:
         elements.insert(1, "")
     return Panel(
         Group(*elements),
-        width=round(os.get_terminal_size().columns * 0.4),
-        border_style="red"
+        width=round(os.get_terminal_size().columns * 0.45),
+        border_style="red",
     )
