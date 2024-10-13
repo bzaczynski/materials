@@ -1,0 +1,173 @@
+# The configurations that used for the recording, feel free to edit them
+config:
+
+  # Specify a command to be executed
+  # like `/bin/bash -l`, `ls`, or any other commands
+  # the default is bash for Linux
+  # or powershell.exe for Windows
+  command: bash -l
+  
+  # Specify the current working directory path
+  # the default is the current working directory path
+  cwd: /home/bartek/Git/materials-forked/wordcount
+  
+  # Export additional ENV variables
+  env:
+    recording: true
+  
+  # Explicitly set the number of columns
+  # or use `auto` to take the current
+  # number of columns of your shell
+  cols: 146
+  
+  # Explicitly set the number of rows
+  # or use `auto` to take the current
+  # number of rows of your shell
+  rows: 35
+  
+  # Amount of times to repeat GIF
+  # If value is -1, play once
+  # If value is 0, loop indefinitely
+  # If value is a positive number, loop n times
+  repeat: 0
+  
+  # Quality
+  # 1 - 100
+  quality: 100
+  
+  # Delay between frames in ms
+  # If the value is `auto` use the actual recording delays
+  frameDelay: auto
+  
+  # Maximum delay between frames in ms
+  # Ignored if the `frameDelay` isn't set to `auto`
+  # Set to `auto` to prevent limiting the max idle time
+  maxIdleTime: 2000
+  
+  # The surrounding frame box
+  # The `type` can be null, window, floating, or solid`
+  # To hide the title use the value null
+  # Don't forget to add a backgroundColor style with a null as type
+  frameBox:
+    type: floating
+    title: Terminalizer
+    style:
+      border: 0px black solid
+      # boxShadow: none
+      # margin: 0px
+  
+  # Add a watermark image to the rendered gif
+  # You need to specify an absolute path for
+  # the image on your machine or a URL, and you can also
+  # add your own CSS styles
+  watermark:
+    imagePath: null
+    style:
+      position: absolute
+      right: 15px
+      bottom: 15px
+      width: 100px
+      opacity: 0.9
+  
+  # Cursor style can be one of
+  # `block`, `underline`, or `bar`
+  cursorStyle: block
+  
+  # Font family
+  # You can use any font that is installed on your machine
+  # in CSS-like syntax
+  fontFamily: "Monaco, Lucida Console, Ubuntu Mono, Monospace"
+  
+  # The size of the font
+  fontSize: 12
+  
+  # The height of lines
+  lineHeight: 1
+  
+  # The spacing between letters
+  letterSpacing: 0
+  
+  # Theme
+  theme:
+    background: "transparent"
+    foreground: "#afafaf"
+    cursor: "#c7c7c7"
+    black: "#232628"
+    red: "#fc4384"
+    green: "#b3e33b"
+    yellow: "#ffa727"
+    blue: "#75dff2"
+    magenta: "#ae89fe"
+    cyan: "#708387"
+    white: "#d5d5d0"
+    brightBlack: "#626566"
+    brightRed: "#ff7fac"
+    brightGreen: "#c8ed71"
+    brightYellow: "#ebdf86"
+    brightBlue: "#75dff2"
+    brightMagenta: "#ae89fe"
+    brightCyan: "#b1c6ca"
+    brightWhite: "#f9f9f4"
+  
+# Records, feel free to edit them
+records:
+  - delay: 1203
+    content: "\e]0;bartek@hp-desktop:~/Git/materials-forked/wordcount\e\\\e]7;file://hp-desktop/home/bartek/Git/materials-forked/wordcount\e\\\e[?2004h\e]0;bartek@hp-desktop: ~/Git/materials-forked/wordcount\a\e[01;32mbartek@hp-desktop\e[00m:\e[01;34m~/Git/materials-forked/wordcount\e[00m$ "
+  - delay: 665
+    content: p
+  - delay: 273
+    content: 'y'
+  - delay: 152
+    content: t
+  - delay: 47
+    content: e
+  - delay: 169
+    content: s
+  - delay: 56
+    content: t
+  - delay: 792
+    content: "\r\n\e[?2004l\r\e]133;C\e\\\r"
+  - delay: 68
+    content: "Command 'pytest' not found, but can be installed with:\r\nsudo apt install python3-pytest\r\n"
+  - delay: 15
+    content: "\e]0;bartek@hp-desktop:~/Git/materials-forked/wordcount\e\\\e]7;file://hp-desktop/home/bartek/Git/materials-forked/wordcount\e\\\e[?2004h\e]0;bartek@hp-desktop: ~/Git/materials-forked/wordcount\a\e[01;32mbartek@hp-desktop\e[00m:\e[01;34m~/Git/materials-forked/wordcount\e[00m$ "
+  - delay: 2082
+    content: w
+  - delay: 168
+    content: o
+  - delay: 105
+    content: r
+  - delay: 80
+    content: k
+  - delay: 103
+    content: o
+  - delay: 112
+    content: 'n'
+  - delay: 2417
+    content: ' '
+  - delay: 109
+    content: wordcount
+  - delay: 339
+    content: "\r\n\e[?2004l\r\e]133;C\e\\\r"
+  - delay: 380
+    content: "\e]0;bartek@hp-desktop:~/Git/materials-forked/wordcount\e\\\e]7;file://hp-desktop/home/bartek/Git/materials-forked/wordcount\e\\\e[?2004h(wordcount) \e]0;bartek@hp-desktop: ~/Git/materials-forked/wordcount\a\e[01;32mbartek@hp-desktop\e[00m:\e[01;34m~/Git/materials-forked/wordcount\e[00m$ "
+  - delay: 649
+    content: p
+  - delay: 264
+    content: 'y'
+  - delay: 152
+    content: t
+  - delay: 87
+    content: e
+  - delay: 177
+    content: s
+  - delay: 40
+    content: t
+  - delay: 272
+    content: "\r\n\e[?2004l\r\e]133;C\e\\\r"
+  - delay: 471
+    content: "\e[31m╭─\e[0m\e[31m───────────\e[0m\e[31m \e[0m\e[1;31mLearn By Doing: Build A Clone Of The Unix `Wc` Shell Command\e[0m\e[31m \e[0m\e[31m────────────\e[0m\e[31m─╮\e[0m\r\n\e[31m│\e[0m \e[1mStatus Indicators\e[0m                                                                     \e[31m│\e[0m\r\n\e[31m│\e[0m \e[32m✓ Completed  \e[0m\e[31m✗ Failed  \e[0m\e[38;5;220m⏱ Timed out  \e[0m\e[38;5;59m\U0001F512 Locked\e[0m                                         \e[31m│\e[0m\r\n\e[31m│\e[0m                                                                                       \e[31m│\e[0m\r\n\e[31m│\e[0m \e[1mTasks\e[0m                                                                                 \e[31m│\e[0m\r\n\e[31m│\e[0m ├── \e[1;31m✗ Task 1: Run the wordcount Command\e[0m                                               \e[31m│\e[0m\r\n\e[31m│\e[0m │   └── \e[31m✗ Command returns successfully\e[0m                                                \e[31m│\e[0m\r\n\e[31m│\e[0m │       └── \e[31m╭───────────────────────────────────────────────────────────────────────╮\e[0m \e[31m│\e[0m\r\n\e[31m│\e[0m │           \e[31m│\e[0m The process should return a zero \e]8;id=213535;https://en.wikipedia.org/wiki/Exit_status\e\\\e[4;34mexit status\e[0m\e]8;;\e\\ code                     \e[31m│\e[0m \e[31m│\e[0m\r\n\e[31m│\e[0m │           \e[31m│\e[0m                                                                       \e[31m│\e[0m \e[31m│\e[0m\r\n\e[31m│\e[0m │           \e[31m│\e[0m \e[1;31m \e[0m\e[1;31mExpected                        \e[0m\e[1;31m \e[0m\e[31m┃\e[0m\e[1;31m \e[0m\e[1;31mActual                          \e[0m\e[1;31m \e[0m \e[31m│\e[0m \e[31m│\e[0m\r\n\e[31m│\e[0m │           \e[31m│\e[0m \e[31m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m \e[31m│\e[0m \e[31m│\e[0m\r\n\e[31m│\e[0m │           \e[31m│\e[0m  \e[48;2;39;40;34m                                \e[0m \e[31m│\e[0m \e[48;2;39;40;34m                                \e[0m  \e[31m│\e[0m \e[31m│\e[0m\r\n\e[31m│\e[0m │           \e[31m│\e[0m  \e[48;2;39;40;34m \e[0m\e[38;2;174;129;255;48;2;39;40;34m0\e[0m\e[48;2;39;40;34m                             \e[0m\e[48;2;39;40;34m \e[0m \e[31m│\e[0m \e[48;2;39;40;34m \e[0m\e[38;2;174;129;255;48;2;39;40;34m1\e[0m\e[48;2;39;40;34m                             \e[0m\e[48;2;39;40;34m \e[0m  \e[31m│\e[0m \e[31m│\e[0m\r\n\e[31m│\e[0m │           \e[31m│\e[0m  \e[48;2;39;40;34m                                \e[0m \e[31m│\e[0m \e[48;2;39;40;34m                                \e[0m  \e[31m│\e[0m \e[31m│\e[0m\r\n\e[31m│\e[0m │           \e[31m╰───────────────────────────────────────────────────────────────────────╯\e[0m \e[31m│\e[0m\r\n\e[31m│\e[0m ├── \e[38;5;59m \U0001F512 \e[0m\e[1;38;5;59mTask 2: Read Data from Standard Input\e[0m                                         \e[31m│\e[0m\r\n\e[31m│\e[0m ├── \e[38;5;59m \U0001F512 \e[0m\e[1;38;5;59mTask 3: Handle Non-ASCII Unicode Characters\e[0m                                   \e[31m│\e[0m\r\n\e[31m│\e[0m ├── \e[38;5;59m \U0001F512 \e[0m\e[1;38;5;59mTask 4: Format Numbers in Displayed Counts\e[0m                                    \e[31m│\e[0m\r\n\e[31m│\e[0m ├── \e[38;5;59m \U0001F512 \e[0m\e[1;38;5;59mTask 5: Read Data From a File\e[0m                                                 \e[31m│\e[0m\r\n\e[31m│\e[0m ├── \e[38;5;59m \U0001F512 \e[0m\e[1;38;5;59mTask 6: Ignore Directories and Missing Files\e[0m                                  \e[31m│\e[0m\r\n\e[31m│\e[0m ├── \e[38;5;59m \U0001F512 \e[0m\e[1;38;5;59mTask 7: Read Data From Multiple Files\e[0m                                         \e[31m│\e[0m\r\n\e[31m│\e[0m ├── \e[38;5;59m \U0001F512 \e[0m\e[1;38;5;59mTask 8: Ensure Consistent Number Formatting\e[0m                                   \e[31m│\e[0m\r\n\e[31m│\e[0m ├── \e[38;5;59m \U0001F512 \e[0m\e[1;38;5;59mTask 9: Select Counts With Command-Line Options\e[0m                               \e[31m│\e[0m\r\n\e[31m│\e[0m └── \e[38;5;59m \U0001F512 \e[0m\e[1;38;5;59mTask 10: Add Support for Counting the Characters\e[0m                              \e[31m│\e[0m\r\n\e[31m│\e[0m                                                                                       \e[31m│\e[0m\r\n\e[31m│\e[0m \e[1mProgress\e[0m       \e[38;5;237m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m                        \e[31m  0%\e[0m   \e[31m│\e[0m\r\n\e[31m╰───────────────────────────────────────────────────────────────────────────────────────╯\e[0m\r\n"
+  - delay: 71
+    content: "\e]0;bartek@hp-desktop:~/Git/materials-forked/wordcount\e\\\e]7;file://hp-desktop/home/bartek/Git/materials-forked/wordcount\e\\\e[?2004h(wordcount) \e]0;bartek@hp-desktop: ~/Git/materials-forked/wordcount\a\e[01;32mbartek@hp-desktop\e[00m:\e[01;34m~/Git/materials-forked/wordcount\e[00m$ "
+  - delay: 1904
+    content: "\e[?2004l\r\r\nlogout\r\n"

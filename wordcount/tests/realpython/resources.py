@@ -30,9 +30,14 @@ class Resource(ABC):
 
 
 class Tutorial(Resource):
+    section_id: str | None = None
+
     @property
     def url(self) -> str:
-        return f"https://realpython.com/{self.slug_clean}/"
+        if self.section_id:
+            return f"https://realpython.com/{self.slug_clean}/#{self.section_id.lstrip("#")}"
+        else:
+            return f"https://realpython.com/{self.slug_clean}/"
 
 
 class Course(Resource):
@@ -60,8 +65,8 @@ class Podcast(Resource):
             return f"[{episode}]({self.url})"
 
 
-def tutorial(slug: str, title: str | None = None) -> Callable:
-    return _associate(Tutorial, slug, title)
+def tutorial(slug: str, title: str | None = None, section: str | None = None) -> Callable:
+    return _associate(Tutorial, slug, title, section)
 
 
 def course(slug: str, title: str | None = None) -> Callable:
@@ -76,9 +81,7 @@ def podcast(slug: str, title: str | None = None) -> Callable:
     return _associate(Podcast, slug, title)
 
 
-def _associate(
-    resource: type, slug: str, title: str | None = None
-) -> Callable:
+def _associate(resource: type, *args) -> Callable:
     def decorator(obj: type | Callable) -> type | Callable:
         match obj:
             case cls if isclass(obj):
@@ -88,7 +91,7 @@ def _associate(
             case test_function if isfunction(obj):
                 if not hasattr(test_function, "resources"):
                     test_function.resources = set()
-                test_function.resources.add(resource(slug, title))
+                test_function.resources.add(resource(*args))
         return obj
 
     return decorator

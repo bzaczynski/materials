@@ -1,4 +1,4 @@
-from realpython import assert_equals, assert_equals_if, task
+from realpython import assert_equals, assert_equals_if, task, tutorial
 
 
 @task(
@@ -6,6 +6,7 @@ from realpython import assert_equals, assert_equals_if, task
     name="Read Data from Standard Input",
     url="https://realpython.com/lessons/wordcount-read-data-from-standard-input-task/",
 )
+@tutorial("python-command-line-arguments", section="standard-input")
 class Test:
     def test_reports_zeros_on_an_empty_stream(self, wc):
         assert_equals(b"0 0 0\n", wc())
