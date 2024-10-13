@@ -1,4 +1,4 @@
-from realpython import task
+from realpython import assert_equals_if, task
 
 
 @task(
@@ -7,71 +7,48 @@ from realpython import task
     url="TODO",
 )
 class Test:
-    def test_displays_counts_and_filenames_on_separate_lines(
-        self, wc, make_file
-    ):
-        with (
-            make_file(b"caffe latte\n") as path1,
-            make_file(b"Lorem ipsum dolor sit amet\n") as path2,
-            make_file("Zażółć gęślą jaźń\n".encode("utf-8")) as path3,
-        ):
-            expected = b"".join(
-                [
-                    f" 1  2 12 {path1}\n".encode(),
-                    f" 1  5 27 {path2}\n".encode(),
-                    f" 1  3 27 {path3}\n".encode(),
-                ]
-            )
-            assert wc(path1, path2, path3).startswith(expected)
+    def test_displays_counts_and_filenames_on_separate_lines(self, wc, medium_files):
+        expected = b"".join(file.format_line() for file in medium_files)
+        assert wc(*medium_files.paths).startswith(expected)
 
-    def test_includes_a_summary_with_total_counts(self, wc, make_file):
-        with (
-            make_file(b"caffe latte\n") as path1,
-            make_file(b"Lorem ipsum dolor sit amet\n") as path2,
-            make_file("Zażółć gęślą jaźń\n".encode("utf-8")) as path3,
-        ):
-            assert wc(path1, path2, path3).endswith(b" 3 10 66 total\n")
 
-    def test_can_repeat_the_same_file_multiple_times(self, wc, make_file):
-        with make_file(b"caffe latte\n") as path:
-            expected = (
-                f" 1  2 12 {path}\n"
-                f" 1  2 12 {path}\n"
-                f" 1  2 12 {path}\n"
-                f" 3  6 36 total\n"
-            )
-            assert expected.encode() == wc(path, path, path)
+    def test_includes_a_summary_with_total_counts(self, wc, medium_files):
+        assert wc(*medium_files.paths).endswith(b" 3 10 66 total\n")
 
-    def test_can_mix_files_with_standard_input(self, wc, make_file):
-        with make_file(b"Lorem ipsum dolor sit amet\n") as path:
-            expected = f" 1  5 27 {path}\n 0  2 11\n 1  7 38 total\n"
-            assert expected.encode() == wc(path, "-", stdin=b"caffe latte")
+    def test_can_repeat_the_same_file_multiple_times(self, wc, file1):
+        expected = b"".join([
+            file1.format_line(),
+            file1.format_line(),
+            file1.format_line(),
+            b" 3  6 36 total\n"
+        ])
+        assert_equals_if(expected, wc(file1.path, file1.path, file1.path))
 
-    # @pytest.mark.skip
-    # def test_can_repeat_standard_input_multiple_times(self, make_file):
-    #     pass
+    def test_can_mix_files_with_standard_input(self, wc, file2):
+        expected = b"".join([
+            file2.format_line(),
+            b" 0  2 11\n",
+            b" 1  7 38 total\n"
+        ])
+        assert_equals_if(expected, wc(file2.path, "-", stdin=b"caffe latte"))
 
-    def test_reports_a_directory_and_a_missing_file(
-        self, wc, random_filename, fake_dir
-    ):
-        assert b"".join(
+    def test_reports_a_directory_and_a_missing_file(self, wc, fake_dir, random_name):
+        assert_equals_if(b"".join(
             [
                 f"0 0 0 {fake_dir}/ (is a directory)\n".encode(),
-                f"0 0 0 {random_filename} (no such file or directory)\n".encode(),
+                f"0 0 0 {random_name} (no such file or directory)\n".encode(),
                 b"0 0 0 total\n",
             ]
-        ) == wc(fake_dir, random_filename)
+        ), wc(fake_dir, random_name))
 
-    def test_reports_a_mix_of_all(
-        self, wc, random_filename, fake_dir, make_file
-    ):
-        with make_file(b"caffe\n") as path:
-            assert b"".join(
-                [
-                    f"0 0 0 {fake_dir}/ (is a directory)\n".encode(),
-                    f"1 1 6 {path}\n".encode(),
-                    f"0 0 0 {random_filename} (no such file or directory)\n".encode(),
-                    b"0 1 3\n",
-                    b"1 2 9 total\n",
-                ]
-            ) == wc(fake_dir, str(path), random_filename, "-", stdin=b"hot")
+    def test_reports_a_mix_of_all(self, wc, fake_dir, random_name, small_file):
+        expected = b"".join(
+            [
+                f"0 0 0 {fake_dir}/ (is a directory)\n".encode(),
+                small_file.format_line(),
+                f"0 0 0 {random_name} (no such file or directory)\n".encode(),
+                b"0 1 3\n",
+                b"1 2 9 total\n",
+            ]
+        )
+        assert_equals_if(expected, wc(fake_dir, str(small_file.path), random_name, "-", stdin=b"hot"))

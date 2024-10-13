@@ -29,12 +29,11 @@ def pytest_exception_interact(call, report):
         except IndexError:
             pass
         else:
-            if message:
-                report.exception = RealPythonAssertionError(
-                    expected=None,
-                    actual=None,
-                    message=f"\N{ELECTRIC LIGHT BULB} {message}",
-                )
+            report.exception = RealPythonAssertionError(
+                expected=None,
+                actual=None,
+                message=f"\N{ELECTRIC LIGHT BULB} {message}",
+            )
     elif issubclass(call.excinfo.type, OutcomeException):
         report.exception = None
     else:
