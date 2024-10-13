@@ -1,4 +1,4 @@
-"""PYTEST_DONT_REWRITE"""  # Disable pytest's assertion rewriting!
+"""PYTEST_DONT_REWRITE"""  # Disable pytest's assertion rewriting for this module!
 
 from .exceptions import RealPythonAssertionError
 

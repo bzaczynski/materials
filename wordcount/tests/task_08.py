@@ -7,12 +7,12 @@ from realpython import assert_equals, task
     url="TODO",
 )
 class Test:
-    def test_uses_consistent_formatting_across_lines(self, wc, small_file, big_file, file3, fake_dir, random_name):
+    def test_uses_consistent_formatting_across_lines(self, wc, small_file, unicode_file, big_file, fake_dir, random_name):
         expected = b"".join(
             [
                 small_file.format_line(max_digits=3),
                 b"  0   2  10\n",
-                file3.format_line(max_digits=3),
+                unicode_file.format_line(max_digits=3),
                 f"  0   0   0 {fake_dir}/ (is a directory)\n".encode(),
                 b"  0   0   0\n",
                 big_file.format_line(max_digits=3),
@@ -23,7 +23,7 @@ class Test:
         actual = wc(
             str(small_file.path),
             "-",
-            str(file3.path),
+            str(unicode_file.path),
             fake_dir,
             "-",
             str(big_file.path),
