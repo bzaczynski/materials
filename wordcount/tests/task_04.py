@@ -4,7 +4,7 @@ from realpython import task
 @task(
     number=4,
     name="Format Numbers in Displayed Counts",
-    url="TODO",
+    url="https://realpython.com/lessons/wordcount-format-numbers-in-displayed-counts-task/",
 )
 class Test:
     def test_long_word_without_trailing_newline(self, wc):

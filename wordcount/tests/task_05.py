@@ -4,7 +4,7 @@ from realpython import assert_equals, task
 @task(
     number=5,
     name="Read Data From a File",
-    url="TODO",
+    url="https://realpython.com/lessons/wordcount-read-data-from-a-file-task/",
 )
 class Test:
     def test_displays_counts_and_a_filename_on_the_same_line(

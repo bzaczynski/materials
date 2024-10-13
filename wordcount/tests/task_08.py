@@ -4,7 +4,7 @@ from realpython import assert_equals, task
 @task(
     number=8,
     name="Ensure Consistent Number Formatting",
-    url="TODO",
+    url="https://realpython.com/lessons/wordcount-ensure-consistent-number-formatting-task/",
 )
 class Test:
     def test_uses_consistent_formatting_across_lines(

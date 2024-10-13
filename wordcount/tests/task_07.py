@@ -5,7 +5,7 @@ from realpython import assert_equals_if, task
 @task(
     number=7,
     name="Read Data From Multiple Files",
-    url="TODO",
+    url="https://realpython.com/lessons/wordcount-read-data-from-multiple-files-task/",
 )
 class Test:
     def test_displays_counts_and_filenames_on_separate_lines(

@@ -6,7 +6,7 @@ from realpython import assert_equals, task
 @task(
     number=9,
     name="Select Counts With Command-Line Options",
-    url="TODO",
+    url="https://realpython.com/lessons/wordcount-select-counts-with-command-line-options-task/",
 )
 class Test:
     def test_counts_lines_words_bytes_by_default(self, wc, runner):

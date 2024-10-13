@@ -4,7 +4,7 @@ from realpython import assert_equals, assert_equals_if, task
 @task(
     number=2,
     name="Read Data from Standard Input",
-    url="TODO",
+    url="https://realpython.com/lessons/wordcount-read-data-from-standard-input-task/",
 )
 class Test:
     def test_reports_zeros_on_an_empty_stream(self, wc):

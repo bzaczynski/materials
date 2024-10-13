@@ -4,7 +4,7 @@ from realpython import task
 @task(
     number=3,
     name="Handle Non-ASCII Unicode Characters",
-    url="TODO",
+    url="https://realpython.com/lessons/wordcount-handle-non-ascii-unicode-characters-task/",
 )
 class Test:
     def test_decodes_multibyte_character_without_trailing_newline(self, wc):

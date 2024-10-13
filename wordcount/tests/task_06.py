@@ -4,7 +4,7 @@ from realpython import task
 @task(
     number=6,
     name="Ignore Directories and Missing Files",
-    url="TODO",
+    url="https://realpython.com/lessons/wordcount-ignore-directories-and-missing-files-task/",
 )
 class Test:
     def test_reports_zeros_on_a_directory(self, wc, fake_dir):
