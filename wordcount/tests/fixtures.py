@@ -2,7 +2,7 @@ import random
 import string
 from contextlib import contextmanager
 from dataclasses import dataclass
-from functools import cached_property
+from functools import cached_property, cache
 from itertools import permutations
 from pathlib import Path
 from string import ascii_lowercase
@@ -17,24 +17,28 @@ class FakeFile:
     content: bytes
     counts: tuple[int, ...]
 
-    def __post_init__(self):
-        self.path.write_bytes(self.content)
+    @cached_property
+    def path(self) -> Path:
+        return Path("-")
 
+    def format_line(self, max_digits=None, selected_counts=None):  # TODO
+        if max_digits is None:
+            max_digits = len(str(max(self.counts)))
+        if self.path.name != "-":
+            return f"{self.counts[0]:{max_digits}} {self.counts[1]:{max_digits}} {self.counts[3]:{max_digits}} {self.path}\n".encode("utf-8")
+        else:
+            return f"{self.counts[0]:{max_digits}} {self.counts[1]:{max_digits}} {self.counts[3]:{max_digits}}\n".encode("utf-8")
+
+
+@dataclass
+class TempFile(FakeFile):
     @cached_property
     def path(self) -> Path:
         name = "".join(random.choices(ascii_lowercase, k=10))
         return Path(gettempdir()) / name
 
-    # def format_line(self, max_digits, selected_counts):
-    def format_line(self):
-        md = len(str(max(self.counts)))
-        return f"{self.counts[0]:{md}} {self.counts[1]:{md}} {self.counts[3]:{md}} {self.path}\n".encode("utf-8")
-        # TODO
-        # TODO bitwise operators
-        # return " ".join(
-        #     f"{number:>{max_digits}}"
-        #     for number in self.numbers(selected_counts)
-        # )
+    def __post_init__(self):
+        self.path.write_bytes(self.content)
 
     def delete(self):
         if self.path.is_dir():
@@ -59,98 +63,133 @@ class Files:
 
     @cached_property
     def expected(self):
-        return b""  # TODO
+        if len(self.files) > 1:
+            return self.file_lines + self.total_line
+        else:
+            return self.file_lines
+
+    @cached_property
+    def file_lines(self):
+        return b"".join(file.format_line() for file in self.files)
+
+    @cached_property
+    def total_line(self):
+        totals = [
+            sum(file.counts[i] for file in self.files)
+            for i in range(4)
+        ]
+        md = len(str(max(totals)))
+        return f"{totals[0]:{md}} {totals[1]:{md}} {totals[3]:{md}} total\n".encode("utf-8")
 
 
 @pytest.fixture(scope="session")
 def small_file():
-    fake_file = FakeFile(
+    temp_file = TempFile(
         content=b"caffe\n",
         counts=(1, 1, 6, 6)
     )
     try:
-        yield fake_file
+        yield temp_file
     finally:
-        fake_file.delete()
+        temp_file.delete()
+
+
+@pytest.fixture(scope="session")
+def big_file():
+    temp_file = TempFile(
+        content=(
+            b"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\n"
+            b"tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\n"
+            b"quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\n"
+            b"consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\n"
+            b"cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\n"
+            b"proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n"
+        ),
+        counts=(6, 69, 447, 447)
+    )
+    try:
+        yield temp_file
+    finally:
+        temp_file.delete()
 
 
 @pytest.fixture(scope="session")
 def file1():
-    fake_file = FakeFile(
+    temp_file = TempFile(
         content=b"caffe latte\n",
         counts=(1, 2, 12, 12)
     )
     try:
-        yield fake_file
+        yield temp_file
     finally:
-        fake_file.delete()
+        temp_file.delete()
 
 
 @pytest.fixture(scope="session")
 def file2():
-    fake_file = FakeFile(
+    temp_file = TempFile(
         content=b"Lorem ipsum dolor sit amet\n",
         counts=(1, 5, 27, 27)
     )
     try:
-        yield fake_file
+        yield temp_file
     finally:
-        fake_file.delete()
+        temp_file.delete()
 
 
 @pytest.fixture(scope="session")
 def file3():
-    fake_file = FakeFile(
+    temp_file = TempFile(
         content="Zażółć gęślą jaźń\n".encode("utf-8"),
         counts=(1, 3, 18, 27)
     )
     try:
-        yield fake_file
+        yield temp_file
     finally:
-        fake_file.delete()
+        temp_file.delete()
 
 
 
 @pytest.fixture(scope="session")
 def small_files():
-    fake_files = [
-        FakeFile(
+    temp_files = [
+        TempFile(
             content=b"Mocha",
             counts=(0, 1, 5, 5)
         ),
-        FakeFile(
+        TempFile(
             content=b"Espresso\n",
             counts=(1, 1, 9, 9)
         ),
-        FakeFile(
+        TempFile(
             content=b"Cappuccino\n",
             counts=(1, 1, 11, 11)
         ),
-        FakeFile(
+        TempFile(
             content=b"Frappuccino",
             counts=(0, 1, 11, 11)
         ),
-        FakeFile(
+        TempFile(
             content=b"Flat White\n",
             counts=(1, 2, 11, 11)
         ),
-        FakeFile(
+        TempFile(
             content=b"Turkish Coffee",
             counts=(0, 2, 14, 14)
         ),
-        FakeFile(
+        TempFile(
             content=b"Irish Coffee Drink\n",
             counts=(1, 3, 19, 19)
         ),
-        FakeFile(
+        TempFile(
             content=b"Espresso con Panna",
             counts=(0, 3, 18, 18)
         ),
     ]
     try:
-        yield Files(fake_files)
+        yield Files(temp_files)
     finally:
-        for file in fake_files:
+        for file in temp_files:
             file.delete()
 
 

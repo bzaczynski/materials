@@ -1,4 +1,5 @@
 from realpython import assert_equals_if, task
+from fixtures import Files, FakeFile
 
 
 @task(
@@ -8,29 +9,19 @@ from realpython import assert_equals_if, task
 )
 class Test:
     def test_displays_counts_and_filenames_on_separate_lines(self, wc, medium_files):
-        expected = b"".join(file.format_line() for file in medium_files)
-        assert wc(*medium_files.paths).startswith(expected)
-
+        assert wc(*medium_files.paths).startswith(medium_files.file_lines)
 
     def test_includes_a_summary_with_total_counts(self, wc, medium_files):
-        assert wc(*medium_files.paths).endswith(b" 3 10 66 total\n")
+        assert wc(*medium_files.paths).endswith(medium_files.total_line)
 
     def test_can_repeat_the_same_file_multiple_times(self, wc, file1):
-        expected = b"".join([
-            file1.format_line(),
-            file1.format_line(),
-            file1.format_line(),
-            b" 3  6 36 total\n"
-        ])
-        assert_equals_if(expected, wc(file1.path, file1.path, file1.path))
+        files = Files([file1, file1, file1])
+        assert_equals_if(files.expected, wc(*files.paths))
 
     def test_can_mix_files_with_standard_input(self, wc, file2):
-        expected = b"".join([
-            file2.format_line(),
-            b" 0  2 11\n",
-            b" 1  7 38 total\n"
-        ])
-        assert_equals_if(expected, wc(file2.path, "-", stdin=b"caffe latte"))
+        dash = FakeFile(b"caffe latte", (0, 2, 11, 11))
+        files = Files([file2, dash])
+        assert_equals_if(files.expected, wc(*files.paths, stdin=dash.content))
 
     def test_reports_a_directory_and_a_missing_file(self, wc, fake_dir, random_name):
         assert_equals_if(b"".join(

@@ -9,11 +9,8 @@ from realpython import task
 class Test:
     def test_decodes_multibyte_character_without_trailing_newline(self, wc):
         """Decodes a multi-byte character without a trailing newline"""
-        assert b"0 1 6\n" == wc(
-            stdin=b"caff\xc3\xa8"
-        ), b"Note the difference between _e_ and _\xc3\xa8_, for example.".decode(
-            "utf-8"
-        )
+        hint = "Note the difference between _e_ and _è_, for example."
+        assert b"0 1 6\n" == wc(stdin=b"caff\xc3\xa8"), hint
 
     def test_decodes_multibyte_character_with_trailing_newline(self, wc):
         """Decodes a multi-byte character with a trailing newline"""

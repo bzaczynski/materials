@@ -1,4 +1,4 @@
-from realpython import task
+from realpython import assert_equals, task
 
 
 @task(
@@ -7,40 +7,27 @@ from realpython import task
     url="TODO",
 )
 class Test:
-    def test_uses_consistent_formatting_across_lines(
-        self, wc, make_file, fake_dir, random_filename
-    ):
-        with (
-            make_file(b"short\n") as path1,
-            make_file("Zażółć gęślą jaźń\n".encode("utf-8")) as path2,
-            make_file(
-                b"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\n"
-                b"tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\n"
-                b"quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\n"
-                b"consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\n"
-                b"cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\n"
-                b"proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n"
-            ) as path3,
-        ):
-            expected = b"".join(
-                [
-                    f"  1   1   6 {path1}\n".encode(),
-                    b"  0   2  10\n",
-                    f"  1   3  27 {path2}\n".encode(),
-                    f"  0   0   0 {fake_dir}/ (is a directory)\n".encode(),
-                    b"  0   0   0\n",
-                    f"  6  69 447 {path3}\n".encode(),
-                    f"  0   0   0 {random_filename} (no such file or directory)\n".encode(),
-                    b"  8  75 490 total\n",
-                ]
-            )
-            assert expected == wc(
-                path1,
-                "-",
-                path2,
-                fake_dir,
-                "-",
-                path3,
-                random_filename,
-                stdin=b"flat white",
-            )
+    def test_uses_consistent_formatting_across_lines(self, wc, small_file, big_file, file3, fake_dir, random_name):
+        expected = b"".join(
+            [
+                small_file.format_line(max_digits=3),
+                b"  0   2  10\n",
+                file3.format_line(max_digits=3),
+                f"  0   0   0 {fake_dir}/ (is a directory)\n".encode(),
+                b"  0   0   0\n",
+                big_file.format_line(max_digits=3),
+                f"  0   0   0 {random_name} (no such file or directory)\n".encode(),
+                b"  8  75 490 total\n",
+            ]
+        )
+        actual = wc(
+            str(small_file.path),
+            "-",
+            str(file3.path),
+            fake_dir,
+            "-",
+            str(big_file.path),
+            random_name,
+            stdin=b"flat white",
+        )
+        assert_equals(expected, actual)
