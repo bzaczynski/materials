@@ -7,7 +7,9 @@ from realpython import assert_equals, task
     url="TODO",
 )
 class Test:
-    def test_uses_consistent_formatting_across_lines(self, wc, small_file, unicode_file, big_file, fake_dir, random_name):
+    def test_uses_consistent_formatting_across_lines(
+        self, wc, small_file, unicode_file, big_file, fake_dir, random_name
+    ):
         expected = b"".join(
             [
                 small_file.format_line(max_digits=3),

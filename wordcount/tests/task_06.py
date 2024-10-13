@@ -12,5 +12,7 @@ class Test:
         assert expected == wc(fake_dir)
 
     def test_reports_zeros_on_a_missing_file(self, wc, random_name):
-        expected = f"0 0 0 {random_name} (no such file or directory)\n".encode()
+        expected = (
+            f"0 0 0 {random_name} (no such file or directory)\n".encode()
+        )
         assert expected == wc(random_name)

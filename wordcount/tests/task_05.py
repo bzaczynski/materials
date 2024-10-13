@@ -7,7 +7,9 @@ from realpython import assert_equals, task
     url="TODO",
 )
 class Test:
-    def test_displays_counts_and_a_filename_on_the_same_line(self, wc, small_files):
+    def test_displays_counts_and_a_filename_on_the_same_line(
+        self, wc, small_files
+    ):
         for file in small_files:
             assert_equals(file.format_line(), wc(str(file.path)))
 

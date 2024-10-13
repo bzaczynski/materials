@@ -20,7 +20,7 @@ class Test:
         assert_equals_if(
             expected=b"1 1 9\n",
             actual=wc(stdin=b"back-end\n"),
-            message="Pay attention to punctuation and special characters."
+            message="Pay attention to punctuation and special characters.",
         )
 
     def test_handles_linux_newline(self, wc):

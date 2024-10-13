@@ -9,8 +9,8 @@ from typing import Iterator, Self
 
 from pytest import Cache, Function, Item, Session
 
-from .exceptions import RealPythonAssertionError
 from .constants import CACHE_TASKS_KEY, STASH_REPORT_KEY
+from .exceptions import RealPythonAssertionError
 
 
 @dataclass(frozen=True)
@@ -87,7 +87,9 @@ class ExerciseProgress:
 
     def __post_init__(self):
         """Ensure that the "statuses" key is a defaultdict instance."""
-        self.root["statuses"] = defaultdict(dict, self.root.get("statuses", {}))
+        self.root["statuses"] = defaultdict(
+            dict, self.root.get("statuses", {})
+        )
 
     @classmethod
     def from_cache(cls, cache: Cache) -> Self:

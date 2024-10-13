@@ -1,5 +1,5 @@
+from fixtures import FakeFile, Files
 from realpython import assert_equals_if, task
-from fixtures import Files, FakeFile
 
 
 @task(
@@ -8,7 +8,9 @@ from fixtures import Files, FakeFile
     url="TODO",
 )
 class Test:
-    def test_displays_counts_and_filenames_on_separate_lines(self, wc, medium_files):
+    def test_displays_counts_and_filenames_on_separate_lines(
+        self, wc, medium_files
+    ):
         assert wc(*medium_files.paths).startswith(medium_files.file_lines)
 
     def test_includes_a_summary_with_total_counts(self, wc, medium_files):
@@ -23,14 +25,19 @@ class Test:
         files = Files([file2, dash])
         assert_equals_if(files.expected, wc(*files.paths, stdin=dash.content))
 
-    def test_reports_a_directory_and_a_missing_file(self, wc, fake_dir, random_name):
-        assert_equals_if(b"".join(
-            [
-                f"0 0 0 {fake_dir}/ (is a directory)\n".encode(),
-                f"0 0 0 {random_name} (no such file or directory)\n".encode(),
-                b"0 0 0 total\n",
-            ]
-        ), wc(fake_dir, random_name))
+    def test_reports_a_directory_and_a_missing_file(
+        self, wc, fake_dir, random_name
+    ):
+        assert_equals_if(
+            b"".join(
+                [
+                    f"0 0 0 {fake_dir}/ (is a directory)\n".encode(),
+                    f"0 0 0 {random_name} (no such file or directory)\n".encode(),
+                    b"0 0 0 total\n",
+                ]
+            ),
+            wc(fake_dir, random_name),
+        )
 
     def test_reports_a_mix_of_all(self, wc, fake_dir, random_name, small_file):
         expected = b"".join(
@@ -42,4 +49,7 @@ class Test:
                 b"1 2 9 total\n",
             ]
         )
-        assert_equals_if(expected, wc(fake_dir, str(small_file.path), random_name, "-", stdin=b"hot"))
+        assert_equals_if(
+            expected,
+            wc(fake_dir, str(small_file.path), random_name, "-", stdin=b"hot"),
+        )

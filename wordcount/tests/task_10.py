@@ -1,7 +1,7 @@
 from itertools import permutations
 
 import pytest
-from realpython import TEST_TIMEOUT_SECONDS, task
+from realpython import TEST_TIMEOUT_SECONDS, assert_equals, task
 
 
 @task(
@@ -10,270 +10,207 @@ from realpython import TEST_TIMEOUT_SECONDS, task
     url="TODO",
 )
 class Test:
-    def test_only_counts_characters(
-        self, wc, make_file, fake_dir, random_filename
-    ):
-        assert b"18\n" == wc("--chars", stdin="zażółć\ngęślą\njaźń\n".encode("utf-8"))
-        with (
-            make_file(b"short\n") as path1,
-            make_file("Zażółć gęślą jaźń\n".encode("utf-8")) as path2,
-            make_file(
-                b"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\n"
-                b"tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\n"
-                b"quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\n"
-                b"consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\n"
-                b"cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\n"
-                b"proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n"
-            ) as path3,
-        ):
-            assert b"".join(
+    def test_only_counts_characters(self, wc, runner):
+        flags = ["--chars"]
+        assert_equals(
+            expected=b"18\n",
+            actual=wc(*flags, stdin="zażółć\ngęślą\njaźń\n".encode("utf-8")),
+        )
+        assert_equals(
+            expected=b"".join(
                 [
-                    f"  6 {path1}\n".encode(),
+                    runner.file1.format_line(max_digits=3, selected=2),
                     b" 10\n",
-                    f" 18 {path2}\n".encode(),
-                    f"  0 {fake_dir}/ (is a directory)\n".encode(),
+                    runner.file2.format_line(max_digits=3, selected=2),
+                    f"  0 {runner.fake_dir}/ (is a directory)\n".encode(),
                     b"  0\n",
-                    f"447 {path3}\n".encode(),
-                    f"  0 {random_filename} (no such file or directory)\n".encode(),
+                    runner.file3.format_line(max_digits=3, selected=2),
+                    f"  0 {runner.random_name} (no such file or directory)\n".encode(),
                     b"481 total\n",
                 ]
-            ) == wc("--chars", path1, "-", path2, fake_dir, "-", path3, random_filename, stdin=b"flat white")
+            ),
+            actual=runner(*flags),
+        )
 
-    def test_counts_characters_and_bytes(self, wc, make_file, fake_dir, random_filename):
-        assert b"18 27\n" == wc("--chars", "--bytes", stdin="zażółć\ngęślą jaźń\n".encode("utf-8"))
-        with (
-            make_file(b"short\n") as path1,
-            make_file("Zażółć gęślą jaźń\n".encode("utf-8")) as path2,
-            make_file(
-                b"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\n"
-                b"tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\n"
-                b"quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\n"
-                b"consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\n"
-                b"cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\n"
-                b"proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n"
-            ) as path3,
-        ):
-            assert b"".join(
+    def test_counts_characters_and_bytes(self, wc, runner):
+        flags = ["--chars", "--bytes"]
+        assert_equals(
+            expected=b"18 27\n",
+            actual=wc(*flags, stdin="zażółć\ngęślą jaźń\n".encode("utf-8")),
+        )
+        assert_equals(
+            expected=b"".join(
                 [
-                    f"  6   6 {path1}\n".encode(),
+                    runner.file1.format_line(max_digits=3, selected=3),
                     b" 10  10\n",
-                    f" 18  27 {path2}\n".encode(),
-                    f"  0   0 {fake_dir}/ (is a directory)\n".encode(),
+                    runner.file2.format_line(max_digits=3, selected=3),
+                    f"  0   0 {runner.fake_dir}/ (is a directory)\n".encode(),
                     b"  0   0\n",
-                    f"447 447 {path3}\n".encode(),
-                    f"  0   0 {random_filename} (no such file or directory)\n".encode(),
+                    runner.file3.format_line(max_digits=3, selected=3),
+                    f"  0   0 {runner.random_name} (no such file or directory)\n".encode(),
                     b"481 490 total\n",
                 ]
-            ) == wc("--chars", "--bytes", path1, "-", path2, fake_dir, "-", path3, random_filename, stdin=b"flat white")
+            ),
+            actual=runner(*flags),
+        )
 
-    def test_counts_words_and_characters(
-        self, wc, make_file, fake_dir, random_filename
-    ):
-        assert b" 3 18\n" == wc("--words", "--chars", stdin="zażółć\ngęślą jaźń\n".encode("utf-8"))
-        with (
-            make_file(b"short\n") as path1,
-            make_file("Zażółć gęślą jaźń\n".encode("utf-8")) as path2,
-            make_file(
-                b"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\n"
-                b"tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\n"
-                b"quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\n"
-                b"consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\n"
-                b"cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\n"
-                b"proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n"
-            ) as path3,
-        ):
-            assert b"".join(
+    def test_counts_words_and_characters(self, wc, runner):
+        flags = ["--words", "--chars"]
+        assert_equals(
+            expected=b" 3 18\n",
+            actual=wc(*flags, stdin="zażółć\ngęślą jaźń\n".encode("utf-8")),
+        )
+        assert_equals(
+            expected=b"".join(
                 [
-                    f"  1   6 {path1}\n".encode(),
+                    runner.file1.format_line(max_digits=3, selected=6),
                     b"  2  10\n",
-                    f"  3  18 {path2}\n".encode(),
-                    f"  0   0 {fake_dir}/ (is a directory)\n".encode(),
+                    runner.file2.format_line(max_digits=3, selected=6),
+                    f"  0   0 {runner.fake_dir}/ (is a directory)\n".encode(),
                     b"  0   0\n",
-                    f" 69 447 {path3}\n".encode(),
-                    f"  0   0 {random_filename} (no such file or directory)\n".encode(),
+                    runner.file3.format_line(max_digits=3, selected=6),
+                    f"  0   0 {runner.random_name} (no such file or directory)\n".encode(),
                     b" 75 481 total\n",
                 ]
-            ) == wc("--words", "--chars", path1, "-", path2, fake_dir, "-", path3, random_filename, stdin=b"flat white")
+            ),
+            actual=runner(*flags),
+        )
 
-    def test_counts_words_characters_bytes(
-        self, wc, make_file, fake_dir, random_filename
-    ):
-        """Counts words, characters, and bytes in stdin"""
-        assert b" 3 18 27\n" == wc("--words", "--chars", "--bytes", stdin="zażółć\ngęślą jaźń\n".encode("utf-8"))
-        with (
-            make_file(b"short\n") as path1,
-            make_file("Zażółć gęślą jaźń\n".encode("utf-8")) as path2,
-            make_file(
-                b"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\n"
-                b"tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\n"
-                b"quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\n"
-                b"consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\n"
-                b"cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\n"
-                b"proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n"
-            ) as path3,
-        ):
-            assert b"".join(
+    def test_counts_words_characters_bytes(self, wc, runner):
+        """Counts words, characters, and bytes"""
+        flags = ["--words", "--chars", "--bytes"]
+        assert_equals(
+            expected=b" 3 18 27\n",
+            actual=wc(*flags, stdin="zażółć\ngęślą jaźń\n".encode("utf-8")),
+        )
+        assert_equals(
+            expected=b"".join(
                 [
-                    f"  1   6   6 {path1}\n".encode(),
+                    runner.file1.format_line(max_digits=3, selected=7),
                     b"  2  10  10\n",
-                    f"  3  18  27 {path2}\n".encode(),
-                    f"  0   0   0 {fake_dir}/ (is a directory)\n".encode(),
+                    runner.file2.format_line(max_digits=3, selected=7),
+                    f"  0   0   0 {runner.fake_dir}/ (is a directory)\n".encode(),
                     b"  0   0   0\n",
-                    f" 69 447 447 {path3}\n".encode(),
-                    f"  0   0   0 {random_filename} (no such file or directory)\n".encode(),
+                    runner.file3.format_line(max_digits=3, selected=7),
+                    f"  0   0   0 {runner.random_name} (no such file or directory)\n".encode(),
                     b" 75 481 490 total\n",
                 ]
-            ) == wc("--words", "--chars", "--bytes", path1, "-", path2, fake_dir, "-", path3, random_filename, stdin=b"flat white")
+            ),
+            actual=runner(*flags),
+        )
 
-    def test_counts_lines_and_characters(
-        self, wc, make_file, fake_dir, random_filename
-    ):
-        assert b" 2 18\n" == wc("--lines", "--chars", stdin="zażółć\ngęślą jaźń\n".encode("utf-8"))
-        with (
-            make_file(b"short\n") as path1,
-            make_file("Zażółć gęślą jaźń\n".encode("utf-8")) as path2,
-            make_file(
-                b"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\n"
-                b"tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\n"
-                b"quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\n"
-                b"consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\n"
-                b"cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\n"
-                b"proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n"
-            ) as path3,
-        ):
-            assert b"".join(
+    def test_counts_lines_and_characters(self, wc, runner):
+        flags = ["--lines", "--chars"]
+        assert_equals(
+            expected=b" 2 18\n",
+            actual=wc(*flags, stdin="zażółć\ngęślą jaźń\n".encode("utf-8")),
+        )
+        assert_equals(
+            expected=b"".join(
                 [
-                    f"  1   6 {path1}\n".encode(),
+                    runner.file1.format_line(max_digits=3, selected=10),
                     b"  0  10\n",
-                    f"  1  18 {path2}\n".encode(),
-                    f"  0   0 {fake_dir}/ (is a directory)\n".encode(),
+                    runner.file2.format_line(max_digits=3, selected=10),
+                    f"  0   0 {runner.fake_dir}/ (is a directory)\n".encode(),
                     b"  0   0\n",
-                    f"  6 447 {path3}\n".encode(),
-                    f"  0   0 {random_filename} (no such file or directory)\n".encode(),
+                    runner.file3.format_line(max_digits=3, selected=10),
+                    f"  0   0 {runner.random_name} (no such file or directory)\n".encode(),
                     b"  8 481 total\n",
                 ]
-            ) == wc("--lines", "--chars", path1, "-", path2, fake_dir, "-", path3, random_filename, stdin=b"flat white")
+            ),
+            actual=runner(*flags),
+        )
 
-    def test_counts_lines_characters_bytes(
-        self, wc, make_file, fake_dir, random_filename
-    ):
-        """Counts lines, characters, and bytes in stdin"""
-        assert b" 2 18 27\n" == wc("--lines", "--chars", "--bytes", stdin="zażółć\ngęślą jaźń\n".encode("utf-8"))
-        with (
-            make_file(b"short\n") as path1,
-            make_file("Zażółć gęślą jaźń\n".encode("utf-8")) as path2,
-            make_file(
-                b"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\n"
-                b"tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\n"
-                b"quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\n"
-                b"consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\n"
-                b"cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\n"
-                b"proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n"
-            ) as path3,
-        ):
-            assert b"".join(
+    def test_counts_lines_characters_bytes(self, wc, runner):
+        """Counts lines, characters, and bytes"""
+        flags = ["--lines", "--chars", "--bytes"]
+        assert_equals(
+            expected=b" 2 18 27\n",
+            actual=wc(*flags, stdin="zażółć\ngęślą jaźń\n".encode("utf-8")),
+        )
+        assert_equals(
+            expected=b"".join(
                 [
-                    f"  1   6   6 {path1}\n".encode(),
+                    runner.file1.format_line(max_digits=3, selected=11),
                     b"  0  10  10\n",
-                    f"  1  18  27 {path2}\n".encode(),
-                    f"  0   0   0 {fake_dir}/ (is a directory)\n".encode(),
+                    runner.file2.format_line(max_digits=3, selected=11),
+                    f"  0   0   0 {runner.fake_dir}/ (is a directory)\n".encode(),
                     b"  0   0   0\n",
-                    f"  6 447 447 {path3}\n".encode(),
-                    f"  0   0   0 {random_filename} (no such file or directory)\n".encode(),
+                    runner.file3.format_line(max_digits=3, selected=11),
+                    f"  0   0   0 {runner.random_name} (no such file or directory)\n".encode(),
                     b"  8 481 490 total\n",
                 ]
-            ) == wc("--lines", "--chars", "--bytes", path1, "-", path2, fake_dir, "-", path3, random_filename, stdin=b"flat white")
+            ),
+            actual=runner(*flags),
+        )
 
-    def test_counts_lines_words_characters(
-        self, wc, make_file, fake_dir, random_filename
-    ):
-        """Counts lines, words, and characters in stdin"""
-        assert b" 2  3 18\n" == wc("--lines", "--words", "--chars", stdin="zażółć\ngęślą jaźń\n".encode("utf-8"))
-        with (
-            make_file(b"short\n") as path1,
-            make_file("Zażółć gęślą jaźń\n".encode("utf-8")) as path2,
-            make_file(
-                b"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\n"
-                b"tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\n"
-                b"quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\n"
-                b"consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\n"
-                b"cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\n"
-                b"proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n"
-            ) as path3,
-        ):
-            assert b"".join(
+    def test_counts_lines_words_characters(self, wc, runner):
+        """Counts lines, words, and characters"""
+        flags = ["--lines", "--words", "--chars"]
+        assert_equals(
+            expected=b" 2  3 18\n",
+            actual=wc(*flags, stdin="zażółć\ngęślą jaźń\n".encode("utf-8")),
+        )
+        assert_equals(
+            expected=b"".join(
                 [
-                    f"  1   1   6 {path1}\n".encode(),
+                    runner.file1.format_line(max_digits=3, selected=14),
                     b"  0   2  10\n",
-                    f"  1   3  18 {path2}\n".encode(),
-                    f"  0   0   0 {fake_dir}/ (is a directory)\n".encode(),
+                    runner.file2.format_line(max_digits=3, selected=14),
+                    f"  0   0   0 {runner.fake_dir}/ (is a directory)\n".encode(),
                     b"  0   0   0\n",
-                    f"  6  69 447 {path3}\n".encode(),
-                    f"  0   0   0 {random_filename} (no such file or directory)\n".encode(),
+                    runner.file3.format_line(max_digits=3, selected=14),
+                    f"  0   0   0 {runner.random_name} (no such file or directory)\n".encode(),
                     b"  8  75 481 total\n",
                 ]
-            ) == wc("--lines", "--words", "--chars", path1, "-", path2, fake_dir, "-", path3, random_filename, stdin=b"flat white")
+            ),
+            actual=runner(*flags),
+        )
 
-    def test_counts_lines_words_characters_bytes(
-        self, wc, make_file, fake_dir, random_filename
-    ):
-        """Counts lines, words, characters, and bytes in stdin"""
-        assert b" 2  3 18 27\n" == wc("--lines", "--words", "--chars", "--bytes", stdin="zażółć\ngęślą jaźń\n".encode("utf-8"))
-        with (
-            make_file(b"short\n") as path1,
-            make_file("Zażółć gęślą jaźń\n".encode("utf-8")) as path2,
-            make_file(
-                b"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\n"
-                b"tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\n"
-                b"quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\n"
-                b"consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\n"
-                b"cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\n"
-                b"proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n"
-            ) as path3,
-        ):
-            assert b"".join(
+    def test_counts_lines_words_characters_bytes(self, wc, runner):
+        """Counts lines, words, characters, and bytes"""
+        flags = ["--lines", "--words", "--chars", "--bytes"]
+        assert_equals(
+            expected=b" 2  3 18 27\n",
+            actual=wc(*flags, stdin="zażółć\ngęślą jaźń\n".encode("utf-8")),
+        )
+        assert_equals(
+            expected=b"".join(
                 [
-                    f"  1   1   6   6 {path1}\n".encode(),
+                    runner.file1.format_line(max_digits=3, selected=15),
                     b"  0   2  10  10\n",
-                    f"  1   3  18  27 {path2}\n".encode(),
-                    f"  0   0   0   0 {fake_dir}/ (is a directory)\n".encode(),
+                    runner.file2.format_line(max_digits=3, selected=15),
+                    f"  0   0   0   0 {runner.fake_dir}/ (is a directory)\n".encode(),
                     b"  0   0   0   0\n",
-                    f"  6  69 447 447 {path3}\n".encode(),
-                    f"  0   0   0   0 {random_filename} (no such file or directory)\n".encode(),
+                    runner.file3.format_line(max_digits=3, selected=15),
+                    f"  0   0   0   0 {runner.random_name} (no such file or directory)\n".encode(),
                     b"  8  75 481 490 total\n",
                 ]
-            ) == wc("--lines", "--words", "--chars", "--bytes", path1, "-", path2, fake_dir, "-", path3, random_filename, stdin=b"flat white")
+            ),
+            actual=runner(*flags),
+        )
 
-    @pytest.mark.timeout(TEST_TIMEOUT_SECONDS * 3)
-    def test_always_displays_counts_in_the_same_order(
-        self, wc, make_file, fake_dir, random_filename
-    ):
-        with (
-            make_file(b"short\n") as path1,
-            make_file("Zażółć gęślą jaźń\n".encode("utf-8")) as path2,
-            make_file(
-                b"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\n"
-                b"tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\n"
-                b"quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\n"
-                b"consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\n"
-                b"cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\n"
-                b"proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n"
-            ) as path3,
+    @pytest.mark.timeout(TEST_TIMEOUT_SECONDS * 4)
+    def test_always_displays_counts_in_the_same_order(self, wc, runner):
+        expected = b"".join(
+            [
+                runner.file1.format_line(max_digits=3, selected=15),
+                b"  0   2  10  10\n",
+                runner.file2.format_line(max_digits=3, selected=15),
+                f"  0   0   0   0 {runner.fake_dir}/ (is a directory)\n".encode(),
+                b"  0   0   0   0\n",
+                runner.file3.format_line(max_digits=3, selected=15),
+                f"  0   0   0   0 {runner.random_name} (no such file or directory)\n".encode(),
+                b"  8  75 481 490 total\n",
+            ]
+        )
+        for flags in permutations(
+            ["--lines", "--words", "--chars", "--bytes"]
         ):
-            expected = b"".join(
-                [
-                    f"  1   1   6   6 {path1}\n".encode(),
-                    b"  0   2  10  10\n",
-                    f"  1   3  18  27 {path2}\n".encode(),
-                    f"  0   0   0   0 {fake_dir}/ (is a directory)\n".encode(),
-                    b"  0   0   0   0\n",
-                    f"  6  69 447 447 {path3}\n".encode(),
-                    f"  0   0   0   0 {random_filename} (no such file or directory)\n".encode(),
-                    b"  8  75 481 490 total\n",
-                ]
+            assert_equals(
+                expected=b" 2  3 18 27\n",
+                actual=wc(
+                    *flags, stdin="zażółć\ngęślą jaźń\n".encode("utf-8")
+                ),
             )
-            for flags in permutations(
-                ["--lines", "--words", "--chars", "--bytes"]
-            ):
-                assert b" 2  3 18 27\n" == wc(*flags, stdin="zażółć\ngęślą jaźń\n".encode("utf-8"))
-                assert expected == wc(*flags, path1, "-", path2, fake_dir, "-", path3, random_filename, stdin=b"flat white")
+            assert_equals(expected=expected, actual=runner(*flags))
