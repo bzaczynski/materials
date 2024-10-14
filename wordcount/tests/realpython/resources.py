@@ -4,7 +4,7 @@ from inspect import getmembers, isclass, isfunction
 from typing import Callable
 
 
-@dataclass(frozen=True)
+@dataclass(unsafe_hash=True)
 class Resource(ABC):
     slug: str
     title: str | None = None
@@ -29,15 +29,27 @@ class Resource(ABC):
         return f"[{self.title_pretty}]({self.url})"
 
 
+@dataclass(unsafe_hash=True)
 class Tutorial(Resource):
     section_id: str | None = None
 
     @property
+    def title_pretty(self) -> str:
+        if self.section_id and not self.title:
+            return self.section.replace("-", " ").title()
+        else:
+            return super().title_pretty
+
+    @property
     def url(self) -> str:
         if self.section_id:
-            return f"https://realpython.com/{self.slug_clean}/#{self.section_id.lstrip("#")}"
+            return f"https://realpython.com/{self.slug_clean}/#{self.section}"
         else:
             return f"https://realpython.com/{self.slug_clean}/"
+
+    @property
+    def section(self):
+        return self.section_id.lstrip("#")
 
 
 class Course(Resource):
@@ -65,7 +77,9 @@ class Podcast(Resource):
             return f"[{episode}]({self.url})"
 
 
-def tutorial(slug: str, title: str | None = None, section: str | None = None) -> Callable:
+def tutorial(
+    slug: str, title: str | None = None, section: str | None = None
+) -> Callable:
     return _associate(Tutorial, slug, title, section)
 
 

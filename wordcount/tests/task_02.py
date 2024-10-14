@@ -7,6 +7,11 @@ from realpython import assert_equals, assert_equals_if, task, tutorial
     url="https://realpython.com/lessons/wordcount-read-data-from-standard-input-task/",
 )
 @tutorial("python-command-line-arguments", section="standard-input")
+@tutorial("python-strings", "Strings and Character Data in Python")
+@tutorial("python-string-split-concatenate-join", "Splitting, Concatenating, and Joining Strings in Python")
+@tutorial("len-python-function", "Using the `len()` Function in Python")
+@tutorial("python-variables", "Variables in Python")
+@tutorial("python-print", "Your Guide to the Python `print()` Function")
 class Test:
     def test_reports_zeros_on_an_empty_stream(self, wc):
         assert_equals(b"0 0 0\n", wc())
