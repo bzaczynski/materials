@@ -1,6 +1,6 @@
 In this lesson, I'm going to show you one possible way to solve this task by satisfying its acceptance criteria.
 
-I'm already in my GitHub Codespaces environment where I have the project set up. When I go the terminal and type the `pytest` command without any arguments, it'll show me the statuses of the acceptance criteria for the current task as well as the past ones:
+I'm in my GitHub Codespaces environment where I have the project already set up. When I go the terminal and type the `pytest` command without any arguments, it'll show me the statuses of the acceptance criteria for the current task as well as the past ones:
 
 ```sh
 $ pytest
@@ -14,7 +14,7 @@ I can also pull up the corresponding page on Real Python by typing `pytest --tas
 $ pytest --task
 ```
 
-The first time you do this, you'll have to tell VS Code that it's safe to trust the realpython.com domain. When you do, it'll open the page with instructions, which I'll move to the side:
+The first time you do this, you'll have to tell VS Code that it's safe to trust the realpython.com domain. When you do, it'll open the page with instructions, which I'll move to the side so that I have them at my fingertips:
 
 Win + Left, Win + Right
 
@@ -39,9 +39,9 @@ Now, I can save the file and re-run pytest to see if there's any change:
 $ pytest
 ```
 
-There is. The first acceptance criterion is lit in green now, which means that we're already making some progress. Of course, as we add more constraints to the problem, it'll force us to update the code in a way that we're still heading in the right direction.
+There is! The first acceptance criterion is lit in green now, which means that we're already making some progress. Of course, as we add more constraints to the problem, it'll force us to update the code in a way that we're still heading in the right direction.
 
-What else I can do is run the `wordcount` command manually from the terminal, for instance, using one the provided examples:
+Another thing I can do is run the `wordcount` command manually from the terminal, for instance, using one the provided examples:
 
 ```sh
 $ echo -n | wordcount
@@ -55,9 +55,9 @@ $ echo | wordcount
 0 0 0
 ```
 
-Well, the expected value is different. Since there's an invisible line break character in the input, the command should report one line, zero words, and one byte, or one-oh-one. And, that's because we don't actually read anything from standard input.
+Well, the expected value is different. Since there's an invisible line break character in the input, the command should have reported one line, zero words, and one byte, or one-oh-one. This discrpancy is because we don't actually read anything from standard input.
 
-There are a couple of ways to read data from standard input in Python. But, one of the most straightforward ones is with the `sys` module, so I'm going to import it now:
+There are a couple of ways to read data from standard input in Python. But, one of the most straightforward ones involves the `sys` module, so I'm going to import it now:
 
 ```python
 import sys
@@ -65,7 +65,7 @@ import sys
 # ...
 ```
 
-I can access the `stdin` object, which stands for standard input, and I can call its `.read()` method. If I don't provide any arguments to the method, then it'll read data until receiving the End-of-File control character or when there's no more data in the stream:
+This module conveniently exposes the `stdin` object, which stands for standard input. I can call the `.read()` method on it. If I don't provide any arguments to the method, then it'll keep reading data until encountering the End-of-File control character or when there's no more data in the stream:
 
 ```python
 import sys
@@ -105,7 +105,9 @@ def main():
     num_lines = text.count("\n")
 ```
 
-Okay. We can determine the number of lines in the text by counting the number of newline characters. But, finding the number of words is a bit more tricky.
+Okay. We can determine the number of lines in the text by counting the number of so-called line feed characters. This already takes into account the differences across newlines on various operating systems. 
+
+But, finding the number of words is a bit more tricky.
 
 According to the definition provided in the task's description, a word is any sequence of characters delimited by whitespace, such as a space or a tab. That's not exactly how the original wordcount command defines words, but it'll do. 
 
