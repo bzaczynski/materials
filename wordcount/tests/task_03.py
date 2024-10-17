@@ -1,4 +1,4 @@
-from realpython import task
+from realpython import external, task, tutorial
 
 
 @task(
@@ -6,6 +6,12 @@ from realpython import task
     name="Handle Non-ASCII Unicode Characters",
     url="https://realpython.com/lessons/wordcount-handle-non-ascii-unicode-characters-task/",
 )
+@external(
+    url="https://docs.python.org/3/howto/unicode.html#python-s-unicode-support",
+    title="Python's Unicode Support"
+)
+@tutorial("python-encodings-guide", "Unicode & Character Encodings in Python: A Painless Guide")
+@tutorial("read-write-files-python", "Reading and Writing Files in Python (Guide)")
 class Test:
     def test_decodes_multibyte_character_without_trailing_newline(self, wc):
         """Decodes a multi-byte character without a trailing newline"""

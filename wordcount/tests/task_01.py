@@ -9,7 +9,11 @@ from realpython import assert_equals, course, task, tutorial
     name="Run the wordcount Command",
     url="https://realpython.com/lessons/wordcount-run-the-wordcount-command-task/",
 )
-@tutorial("python-comments-guide")
+@tutorial("defining-your-own-python-function")
+@tutorial("terminal-commands", "The Terminal: First Steps and Useful Commands")
+@tutorial("python-pass", "The `pass` Statement: How to Do Nothing in Python")
+@course("using-terminal-linux", "Using the Terminal on Linux")
+@tutorial("python-comments-guide", "Writing Comments in Python (Guide)")
 @course("writing-comments-python", "Writing Comments in Python")
 class Test:
     def test_command_returns_successfully(self):

@@ -5,6 +5,19 @@ from typing import Callable
 
 
 @dataclass(unsafe_hash=True)
+class ExternalResource:
+    url: str
+    title: str
+
+    @property
+    def title_pretty(self):
+        return self.title
+
+    def __str__(self) -> str:
+        return f"[{self.title_pretty}]({self.url})"
+
+
+@dataclass(unsafe_hash=True)
 class Resource(ABC):
     slug: str
     title: str | None = None
@@ -93,6 +106,10 @@ def learning_path(slug: str, title: str | None = None) -> Callable:
 
 def podcast(slug: str, title: str | None = None) -> Callable:
     return _associate(Podcast, slug, title)
+
+
+def external(url: str, title: str) -> Callable:
+    return _associate(ExternalResource, url, title)
 
 
 def _associate(resource: type, *args) -> Callable:

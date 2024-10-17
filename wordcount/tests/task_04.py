@@ -1,4 +1,4 @@
-from realpython import task
+from realpython import task, tutorial
 
 
 @task(
@@ -6,6 +6,9 @@ from realpython import task
     name="Format Numbers in Displayed Counts",
     url="https://realpython.com/lessons/wordcount-format-numbers-in-displayed-counts-task/",
 )
+@tutorial("how-to-python-f-string-format-float", "How to Format Floats Within F-Strings in Python")
+@tutorial("python-f-strings", "Python's F-String for String Interpolation and Formatting")
+@tutorial("python-min-and-max", "Python's `min()` and `max()`: Find Smallest and Largest Values")
 class Test:
     def test_long_word_without_trailing_newline(self, wc):
         assert b" 0  1 29\n" == wc(stdin=b"floccinaucinihilipilification")
