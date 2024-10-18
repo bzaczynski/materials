@@ -9,7 +9,9 @@ from realpython import assert_equals_if, task, tutorial
 )
 @tutorial("python-for-loop", 'Python "for" Loops (Definite Iteration)')
 @tutorial("python-list", "Python's list Data Type: A Deep Dive With Examples")
-@tutorial("list-comprehension-python", "When to Use a List Comprehension in Python")
+@tutorial(
+    "list-comprehension-python", "When to Use a List Comprehension in Python"
+)
 class Test:
     def test_displays_counts_and_filenames_on_separate_lines(
         self, wc, medium_files

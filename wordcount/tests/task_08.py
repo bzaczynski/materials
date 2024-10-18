@@ -7,11 +7,26 @@ from realpython import assert_equals, task, tutorial
     url="https://realpython.com/lessons/wordcount-ensure-consistent-number-formatting-task/",
 )
 @tutorial("python-data-classes", "Data Classes in Python (Guide)")
-@tutorial("python-multiple-constructors", "Providing Multiple Constructors in Your Python Classes")
-@tutorial("python-classes", "Python Classes: The Power of Object-Oriented Programming")
-@tutorial("python-magic-methods", "Python's Magic Methods: Leverage Their Power in Your Classes")
-@tutorial("python-property", "Python's property(): Add Managed Attributes to Your Classes")
-@tutorial("python-repr-vs-str", "When Should You Use .__repr__() vs .__str__() in Python?")
+@tutorial(
+    "python-multiple-constructors",
+    "Providing Multiple Constructors in Your Python Classes",
+)
+@tutorial(
+    "python-classes",
+    "Python Classes: The Power of Object-Oriented Programming",
+)
+@tutorial(
+    "python-magic-methods",
+    "Python's Magic Methods: Leverage Their Power in Your Classes",
+)
+@tutorial(
+    "python-property",
+    "Python's property(): Add Managed Attributes to Your Classes",
+)
+@tutorial(
+    "python-repr-vs-str",
+    "When Should You Use .__repr__() vs .__str__() in Python?",
+)
 @tutorial("python-namedtuple", "Write Pythonic and Clean Code With namedtuple")
 class Test:
     def test_uses_consistent_formatting_across_lines(

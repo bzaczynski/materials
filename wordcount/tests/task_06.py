@@ -7,7 +7,10 @@ from realpython import task, tutorial
     url="https://realpython.com/lessons/wordcount-ignore-directories-and-missing-files-task/",
 )
 @tutorial("python-exceptions", "Python Exceptions: An Introduction")
-@tutorial("python-built-in-exceptions", "Python's Built-in Exceptions: A Walkthrough With Examples")
+@tutorial(
+    "python-built-in-exceptions",
+    "Python's Built-in Exceptions: A Walkthrough With Examples",
+)
 class Test:
     def test_reports_zeros_on_a_directory(self, wc, fake_dir):
         expected = f"0 0 0 {fake_dir}/ (is a directory)\n".encode()

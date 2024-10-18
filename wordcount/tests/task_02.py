@@ -8,7 +8,10 @@ from realpython import assert_equals, assert_equals_if, task, tutorial
 )
 @tutorial("python-command-line-arguments", section="standard-input")
 @tutorial("python-strings", "Strings and Character Data in Python")
-@tutorial("python-string-split-concatenate-join", "Splitting, Concatenating, and Joining Strings in Python")
+@tutorial(
+    "python-string-split-concatenate-join",
+    "Splitting, Concatenating, and Joining Strings in Python",
+)
 @tutorial("len-python-function", "Using the `len()` Function in Python")
 @tutorial("python-variables", "Variables in Python")
 @tutorial("python-print", "Your Guide to the Python `print()` Function")

@@ -1,44 +1,105 @@
 import sys
+from argparse import ArgumentParser, Namespace
+from dataclasses import dataclass
+from enum import IntFlag, auto
+from functools import cached_property
 from pathlib import Path
+from typing import NamedTuple
+
+
+class SelectedCounts(IntFlag):
+    NONE = 0
+    LINES = auto()
+    WORDS = auto()
+    BYTES = auto()
+    DEFAULT = LINES | WORDS | BYTES
+
+
+class Arguments(Namespace):
+    @cached_property
+    def selected_counts(self):
+        selected = self.lines | self.words | self.bytes
+        return selected or SelectedCounts.DEFAULT
+
+
+class Counts(NamedTuple):
+    lines: int = 0
+    words: int = 0
+    bytes: int = 0
+
+    @property
+    def max_digits(self):
+        return len(str(max(self)))
+
+    def as_string(self, max_digits):
+        return (
+            f"{self.lines:>{max_digits}} "
+            f"{self.words:>{max_digits}} "
+            f"{self.bytes:>{max_digits}}"
+        )
+
+    def __add__(self, other):
+        return Counts(
+            lines=self.lines + other.lines,
+            words=self.words + other.words,
+            bytes=self.bytes + other.bytes,
+        )
+
+
+@dataclass(frozen=True)
+class FileInfo:
+    path: Path
+    counts: Counts
+
+    @classmethod
+    def from_path(cls, path):
+        if path.name == "-":
+            raw_text = sys.stdin.buffer.read()
+        elif path.is_file():
+            raw_text = path.read_bytes()
+        else:
+            return cls(path, Counts())
+        text = raw_text.decode("utf-8")
+        return cls(
+            path,
+            Counts(
+                lines=text.count("\n"),
+                words=len(text.split()),
+                bytes=len(raw_text),
+            ),
+        )
+
 
 def main():
-    if len(sys.argv) > 1:
-        paths = [Path(arg) for arg in sys.argv[1:]]
+    args = parse_args()
+    if len(args.paths) > 0:
+        file_infos = [FileInfo.from_path(path) for path in args.paths]
     else:
-        paths = [Path("-")]
-    total_counts = [0, 0, 0]
-    for path in paths:
-        try:
-            if path.name == "-":
-                raw_text = sys.stdin.buffer.read()
-            else:
-                raw_text = path.read_bytes()
-            text = raw_text.decode("utf-8")
-            num_lines = text.count("\n")
-            num_words = len(text.split())
-            num_bytes = len(raw_text)
-            total_counts[0] += num_lines
-            total_counts[1] += num_words
-            total_counts[2] += num_bytes
-            max_digits = len(str(max(num_lines, num_words, num_bytes)))
-            output = (
-                f"{num_lines:>{max_digits}} "
-                f"{num_words:>{max_digits}} "
-                f"{num_bytes:>{max_digits}}"
-            )
-            if path.name != "-":
-                print(output, path)
-            else:
-                print(output)
-        except IsADirectoryError:
-            print(f"0 0 0 {path}/ (is a directory)")
-        except FileNotFoundError:
-            print(f"0 0 0 {path} (no such file or directory)")
-    if len(paths) > 1:
-        max_digits = len(str(max(total_counts)))
-        output = (
-            f"{total_counts[0]:>{max_digits}} "
-            f"{total_counts[1]:>{max_digits}} "
-            f"{total_counts[2]:>{max_digits}}"
+        file_infos = [FileInfo.from_path(Path("-"))]
+    total_counts = sum((info.counts for info in file_infos), Counts())
+    max_digits = total_counts.max_digits
+    for info in file_infos:
+        line = info.counts.as_string(max_digits)
+        if info.path == Path("-"):
+            print(line)
+        elif not info.path.exists():
+            print(line, info.path, "(no such file or directory)")
+        elif info.path.is_dir():
+            print(line, f"{info.path}/ (is a directory)")
+        else:
+            print(line, info.path)
+    if len(file_infos) > 1:
+        print(total_counts.as_string(max_digits), "total")
+
+
+def parse_args():
+    parser = ArgumentParser()
+    parser.add_argument("paths", nargs="*", type=Path)
+    for flag in SelectedCounts:
+        parser.add_argument(
+            f"--{flag.name.lower()}",
+            action="store_const",
+            const=flag,
+            default=SelectedCounts.NONE,
         )
-        print(output, "total")
+    return parser.parse_args(namespace=Arguments())
