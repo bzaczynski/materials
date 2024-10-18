@@ -1,6 +1,6 @@
 from itertools import permutations
 
-from realpython import assert_equals, task
+from realpython import assert_equals, task, tutorial
 
 
 @task(
@@ -8,6 +8,13 @@ from realpython import assert_equals, task
     name="Select Counts With Command-Line Options",
     url="https://realpython.com/lessons/wordcount-select-counts-with-command-line-options-task/",
 )
+
+@tutorial("python-bitwise-operators", "Bitwise Operators in Python")
+@tutorial("command-line-interfaces-python-argparse", "Build Command-Line Interfaces With Python's `argparse`")
+@tutorial("python-enum", "Build Enumerations of Constants With Python's Enum")
+@tutorial("lru-cache-python", "Caching in Python Using the LRU Cache Strategy")
+@tutorial("python-built-in-functions", "Managing Attributes: `getattr()`, `setattr()`, and `delattr()`", section="managing-attributes-getattr-setattr-and-delattr")
+@tutorial("python-or-operator", "Short-Circuit Evaluation", section="short-circuit-evaluation")
 class Test:
     def test_counts_lines_words_bytes_by_default(self, wc, runner):
         """Counts lines, words, and bytes by default"""
