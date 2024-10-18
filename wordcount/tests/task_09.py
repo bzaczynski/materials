@@ -8,7 +8,6 @@ from realpython import assert_equals, task, tutorial
     name="Select Counts With Command-Line Options",
     url="https://realpython.com/lessons/wordcount-select-counts-with-command-line-options-task/",
 )
-
 @tutorial("python-bitwise-operators", "Bitwise Operators in Python")
 @tutorial("command-line-interfaces-python-argparse", "Build Command-Line Interfaces With Python's `argparse`")
 @tutorial("python-enum", "Build Enumerations of Constants With Python's Enum")
