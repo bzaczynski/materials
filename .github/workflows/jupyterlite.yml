@@ -25,7 +25,7 @@ jobs:
           python-version: '3.13'
 
       - name: Install JupyterLite
-        run: pip install jupyterlite-core jupyterlite-pyodide-kernel jupyter-server
+        run: pip install jupyterlite-core jupyterlite-pyodide-kernel jupyter-server nbclassic
 
       - name: Build JupyterLite
         run: |

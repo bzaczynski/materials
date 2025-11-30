@@ -1,6 +1,19 @@
 {
-    "jupyter-lite-schema-version": 0,
-    "jupyter-config-data": {
-        "defaultKernelName": "python"
+"jupyter-lite-schema-version": 0,
+"jupyter-config-data": {
+  "defaultKernelName": "python",
+  "settingsOverrides": {
+    "@jupyterlab/mainmenu-extension:plugin": {
+      "menus": []
+    },
+    "@jupyterlab/notebook-extension:panel": {
+      "showHiddenCellsButton": false
     }
+  },
+  "disabledExtensions": [
+    "@jupyterlab/filebrowser-extension",
+    "@jupyterlab/application-extension:logo",
+    "@jupyterlab/statusbar-extension"
+  ]
+}
 }
